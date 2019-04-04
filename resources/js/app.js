@@ -9,7 +9,8 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 // import 'vuetify/dist/vuetify.min.css'
-
+// import TheNavDrawer from './components/layout/TheNavDrawer'
+import App from './App.vue'
 // require('./bootstrap')
 /**
  * The following block of code may be used to automatically register your
@@ -24,7 +25,9 @@ import Vuetify from 'vuetify'
 
 Vue.use(Vuetify)
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default)
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default)
+Vue.component('VueApp', App)
+// Vue.component('TheToolbar', TheToolbar)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,6 +36,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 // eslint-disable-next-line no-unused-vars
-const app = new Vue({
-  el: '#app'
-})
+// const app = new Vue({
+//   el: '#app'
+// })
+
+new Vue({
+//   data: () => ({ store }),
+//   router,
+  render: h => h(App)
+}).$mount('#app')

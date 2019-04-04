@@ -24,9 +24,7 @@
 </head>
 <body>
     <div id="app">
-        <v-app id="v-app">
-            @yield('content')
-        </v-app>
+        <vue-app></vue-app>
     </div>
 </body>
 </html>
