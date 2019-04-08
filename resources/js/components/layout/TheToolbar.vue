@@ -1,13 +1,13 @@
 <template>
   <v-toolbar
-    color="blue-grey"
+    color="primary"
     dark
     fixed
     app
     clipped-right
   >
     <v-toolbar-side-icon @click="$emit('toggle')" />
-    <v-toolbar-title>Test CMS</v-toolbar-title>
+    <v-toolbar-title>Toolbar</v-toolbar-title>
     <v-spacer />
   </v-toolbar>
 </template>

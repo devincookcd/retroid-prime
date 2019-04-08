@@ -11,6 +11,7 @@ import Vuetify from 'vuetify'
 // import 'vuetify/dist/vuetify.min.css'
 // import TheNavDrawer from './components/layout/TheNavDrawer'
 import App from './App.vue'
+import router from './router'
 // require('./bootstrap')
 /**
  * The following block of code may be used to automatically register your
@@ -42,6 +43,6 @@ Vue.component('VueApp', App)
 
 new Vue({
 //   data: () => ({ store }),
-//   router,
+  router,
   render: h => h(App)
 }).$mount('#app')

@@ -7,6 +7,12 @@
       <the-nav-drawer
         :is-open="showNav"
       />
+
+      <v-content>
+        <v-container fluid>
+          <router-view />
+        </v-container>
+      </v-content>
     </v-app>
     <!-- <FontAwsomeIcon
       icon="check-circle"
