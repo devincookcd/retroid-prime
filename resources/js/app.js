@@ -13,6 +13,8 @@ import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import Axios from 'axios'
+
 // require('./bootstrap')
 /**
  * The following block of code may be used to automatically register your
@@ -43,6 +45,15 @@ Object.defineProperty(Vue.prototype, '$bus', {
     return bus
   }
 })
+
+let token = document.head.querySelector('meta[name="csrf-token"]')
+
+if (token) {
+  Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+  console.log(token)
+} else {
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
+}
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

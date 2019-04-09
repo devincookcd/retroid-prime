@@ -1,10 +1,18 @@
 <template>
-  <div>
+  <div v-if="user">
     Welcome Back {{ user.name }}
+    <v-btn @click="getUser">
+      Get User
+    </v-btn>
+
+    <div v-if="test">
+      {{ test }}!!!!
+    </div>
   </div>
 </template>
 
 <script>
+import Axios from 'axios'
 export default {
   // Name
   name: 'Dashboard',
@@ -21,7 +29,8 @@ export default {
   // Data
   data () {
     return {
-      msg: 'Hello World'
+      msg: 'Hello World',
+      test: undefined
     }
   },
 
@@ -42,7 +51,19 @@ export default {
   mounted () {},
 
   // Methods
-  methods: {}
+  methods: {
+    async getUser () {
+      try {
+        const response = await Axios({
+          method: 'get',
+          url: '/api/user'
+        })
+        this.test = response.data.user
+      } catch (error) {
+
+      }
+    }
+  }
 }
 </script>
 

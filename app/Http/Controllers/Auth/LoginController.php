@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Response;
+use Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 
@@ -53,8 +54,30 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
         return Response::json([
             'success' => true,
-            'user' => $request->user()
+            'user' => $request->user(),
+            'csrfToken' => csrf_token()
+            // 'apiToken' => $current_user
         ]);
     }
 
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+        // Session::flush();
+
+        return $this->loggedOut($request) ?: Response::json([
+            'success' => true,
+            'message' => 'Logout Successful',
+            'id' => $request->session()->all()
+        ]);
+    }
 }

@@ -111,6 +111,8 @@ export default {
             password: this.password
           }
         })
+        Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token
+        // Axios.defaults.headers.common['Authorization'] = response.data.token
         const user = response.data.user
         this.handleSuccessfulLogin(user)
       } catch (error) {
