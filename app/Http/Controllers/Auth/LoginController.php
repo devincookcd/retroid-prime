@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -51,7 +52,8 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
         return Response::json([
-            'success' => true
+            'success' => true,
+            'user' => $request->user()
         ]);
     }
 

@@ -21,10 +21,14 @@
             <v-toolbar-title>Login</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form>
+            <v-form ref="form">
               <v-text-field
                 v-model="email"
                 :readonly="loading"
+                :rules="[
+                  $data.$_validation_rules.required,
+                  $data.$_validation_rules.email
+                ]"
                 prepend-icon="person"
                 name="email"
                 label="Email"
@@ -34,32 +38,38 @@
                 id="password"
                 v-model="password"
                 :readonly="loading"
+                :rules="[
+                  $data.$_validation_rules.required
+                ]"
                 prepend-icon="lock"
                 name="password"
                 label="Password"
                 type="password"
               />
             </v-form>
-
-            <v-alert
-              v-if="error"
-              :value="true"
-              type="error"
-            >
-              {{ error }}
-            </v-alert>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
             <v-btn
               color="primary"
               :loading="loading"
-              @click="testToast"
+              @click="login"
             >
               Login
             </v-btn>
           </v-card-actions>
         </v-card>
+
+        <transition name="slide-y-transition">
+          <v-alert
+            v-if="error"
+            :value="true"
+            class="mt-2"
+            type="error"
+          >
+            {{ error }}
+          </v-alert>
+        </transition>
       </v-flex>
     </v-layout>
   </v-container>
@@ -67,19 +77,14 @@
 
 <script>
 import Axios from 'axios'
+import validation from '@/mixins/validation'
 
 export default {
   // Name
   name: 'Login',
 
-  // Components
-  components: {},
-
   // Mixins
-  mixins: [],
-
-  // Props
-  props: {},
+  mixins: [validation],
 
   // Data
   data () {
@@ -91,31 +96,14 @@ export default {
     }
   },
 
-  // Computed
-  computed: {},
-
-  // Watch
-  watch: {},
-
-  // Created
-  created () {},
-
-  // Mounted
-  mounted () {},
-
   // Methods
   methods: {
-
-    testToast () {
-      this.$bus.$emit('toast', {
-        text: 'TESTING'
-      })
-    },
     async login () {
+      if (!this.$refs.form.validate()) return
       this.loading = true
       this.error = undefined
       try {
-        await Axios({
+        const response = await Axios({
           method: 'post',
           url: '/login',
           data: {
@@ -123,12 +111,20 @@ export default {
             password: this.password
           }
         })
+        const user = response.data.user
+        this.handleSuccessfulLogin(user)
       } catch (error) {
         console.dir(error)
         this.error = error.response.data.message
       } finally {
         this.loading = false
       }
+    },
+
+    handleSuccessfulLogin (user) {
+      this.$bus.$emit('toast', {
+        text: `Logged in as ${user.name}`
+      })
     }
   }
 }

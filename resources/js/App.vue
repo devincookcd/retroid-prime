@@ -25,7 +25,7 @@
 <script>
 import TheNavDrawer from './components/layout/TheNavDrawer'
 import TheToolbar from './components/layout/TheToolbar'
-import TheToaster from './components/layout/TheToaster'
+import TheToaster from '@/components/layout/TheToaster'
 
 export default {
   components: {

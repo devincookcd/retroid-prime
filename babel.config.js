@@ -13,4 +13,9 @@ const presets = [
   ]
 ]
 
-module.exports = { presets }
+const plugins = [
+  '@babel/transform-runtime',
+  '@babel/syntax-dynamic-import'
+]
+
+module.exports = { presets, plugins }

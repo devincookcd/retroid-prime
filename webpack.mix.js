@@ -1,5 +1,5 @@
-const mix = require('laravel-mix');
-
+const mix = require('laravel-mix')
+const path = require('path')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -24,16 +24,16 @@ mix.browserSync({
  */
 mix.webpackConfig(webpack => {
   return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'resources/js/'),
+        'styles': path.resolve(__dirname, 'resources/sass/'),
+        'img': path.resolve(__dirname, 'resources/img/')
+      }
+    },
     output: {
       chunkFilename: 'js/[name].bundle.js?id=[chunkhash]',
       publicPath: '/'
-    },
-    resolve: {
-      alias: {
-        '@': global.path.resolve(__dirname, 'resources/assets/js/'),
-        'styles': global.path.resolve(__dirname, 'resources/assets/sass/'),
-        'img': global.path.resolve(__dirname, 'resources/assets/img/')
-      }
     },
     plugins: [
       new webpack.ProvidePlugin({
@@ -54,4 +54,4 @@ mix.webpackConfig(webpack => {
 })
 
 mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+  .sass('resources/sass/app.scss', 'public/css')
