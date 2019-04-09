@@ -5,12 +5,13 @@
     app
   >
     <v-list dense>
-      <v-list-tile @click.stop="left = !left">
-        <!-- <v-list-tile-action>
-          <v-icon>book</v-icon>
-        </v-list-tile-action> -->
+      <v-list-tile
+        v-for="(item, index) in menu"
+        :key="index"
+        @click="$router.push(item.href)"
+      >
         <v-list-tile-content>
-          <v-list-tile-title>Login</v-list-tile-title>
+          <v-list-tile-title>{{ item.text }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <!-- </v-list-tile> -->
@@ -42,7 +43,14 @@ export default {
     drawer: null,
     drawerRight: null,
     right: false,
-    left: true
+    left: true,
+    menu: [{
+      text: 'Login',
+      href: '/'
+    }, {
+      text: 'Register',
+      href: '/register'
+    }]
   }),
 
   // Computed
