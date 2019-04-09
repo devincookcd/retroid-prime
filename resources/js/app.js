@@ -31,6 +31,19 @@ Vue.component('VueApp', App)
 // Vue.component('TheToolbar', TheToolbar)
 
 /**
+ * Global Event Bus
+ * @desc used to transmit events between components
+ * @example this.$bus.$emit('event')
+ * @example this.$bus.$on('event', () => {})
+ */
+const bus = new Vue({})
+Object.defineProperty(Vue.prototype, '$bus', {
+  get () {
+    return bus
+  }
+})
+
+/**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.

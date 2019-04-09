@@ -13,6 +13,7 @@
           <router-view />
         </v-container>
       </v-content>
+      <TheToaster />
     </v-app>
     <!-- <FontAwsomeIcon
       icon="check-circle"
@@ -24,11 +25,13 @@
 <script>
 import TheNavDrawer from './components/layout/TheNavDrawer'
 import TheToolbar from './components/layout/TheToolbar'
+import TheToaster from './components/layout/TheToaster'
 
 export default {
   components: {
     TheNavDrawer,
-    TheToolbar
+    TheToolbar,
+    TheToaster
   },
 
   data: () => ({

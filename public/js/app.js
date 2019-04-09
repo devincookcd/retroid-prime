@@ -1782,6 +1782,7 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_layout_TheNavDrawer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/layout/TheNavDrawer */ "./resources/js/components/layout/TheNavDrawer.vue");
 /* harmony import */ var _components_layout_TheToolbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/layout/TheToolbar */ "./resources/js/components/layout/TheToolbar.vue");
+/* harmony import */ var _components_layout_TheToaster__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/layout/TheToaster */ "./resources/js/components/layout/TheToaster.vue");
 //
 //
 //
@@ -1805,12 +1806,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     TheNavDrawer: _components_layout_TheNavDrawer__WEBPACK_IMPORTED_MODULE_0__["default"],
-    TheToolbar: _components_layout_TheToolbar__WEBPACK_IMPORTED_MODULE_1__["default"]
+    TheToolbar: _components_layout_TheToolbar__WEBPACK_IMPORTED_MODULE_1__["default"],
+    TheToaster: _components_layout_TheToaster__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -1883,6 +1887,118 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {},
   // Methods
   methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/layout/TheToaster.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/layout/TheToaster.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // Name
+  name: 'TheToaster',
+  // Data
+  data: function data() {
+    return {
+      snackbar: false,
+      positionY: 'top',
+      text: undefined,
+      timeout: 6000,
+      toast: undefined,
+      toastQueue: [],
+      processing: false,
+      processingTimeout: undefined,
+      queueTimeout: undefined
+    };
+  },
+  // Computed
+  computed: {
+    toastTimeout: function toastTimeout() {
+      if (this.toast && this.toast.timeout) {
+        return this.toast.timeout;
+      } else {
+        return this.timeout;
+      }
+    }
+  },
+  // Created
+  created: function created() {
+    var _this = this;
+
+    this.$bus.$on('toast', function (toast) {
+      _this.queueToast(toast);
+    });
+  },
+  // Mounted
+  mounted: function mounted() {},
+  // Methods
+  methods: {
+    queueToast: function queueToast(toast) {
+      this.toastQueue.push(toast);
+      console.log(this.toastQueue, toast);
+      if (!this.processing) this.processQueue();
+    },
+    processQueue: function processQueue() {
+      var _this2 = this;
+
+      this.snackbar = true;
+      this.processing = true;
+      this.toast = this.toastQueue.shift();
+      this.processingTimeout = setTimeout(function () {
+        _this2.checkQueue();
+      }, this.toastTimeout);
+    },
+
+    /**
+     * Check Queue
+     * If there are still toasts left, continue to process the queue
+     */
+    checkQueue: function checkQueue() {
+      var _this3 = this;
+
+      if (this.toastQueue.length > 0) {
+        this.queueTimeout = setTimeout(function () {
+          _this3.processQueue();
+        }, 500);
+      } else {
+        this.processingQueue = false;
+      }
+    },
+
+    /**
+     * Close Toast
+     * clear timeouts, hide toast, check queue
+     */
+    closeToast: function closeToast() {
+      clearTimeout(this.processTimeout);
+      clearTimeout(this.queueTimeout);
+      this.snackbar = false;
+      this.checkQueue();
+    }
+  }
 });
 
 /***/ }),
@@ -2054,6 +2170,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {},
   // Methods
   methods: {
+    testToast: function testToast() {
+      this.$bus.$emit('toast', {
+        text: 'TESTING'
+      });
+    },
     login: function () {
       var _login = _asyncToGenerator(
       /*#__PURE__*/
@@ -4568,7 +4689,9 @@ var render = function() {
               )
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _c("TheToaster")
         ],
         1
       )
@@ -4627,6 +4750,59 @@ var render = function() {
           )
         ],
         1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/layout/TheToaster.vue?vue&type=template&id=37186e66&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/layout/TheToaster.vue?vue&type=template&id=37186e66&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-snackbar",
+    {
+      attrs: { top: "", timeout: _vm.toastTimeout },
+      model: {
+        value: _vm.snackbar,
+        callback: function($$v) {
+          _vm.snackbar = $$v
+        },
+        expression: "snackbar"
+      }
+    },
+    [
+      _vm.toast ? _c("span", [_vm._v(_vm._s(_vm.toast.text))]) : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          attrs: { color: "accent", flat: "" },
+          on: {
+            click: function($event) {
+              return _vm.closeToast()
+            }
+          }
+        },
+        [_vm._v("\n    Close\n  ")]
       )
     ],
     1
@@ -4796,7 +4972,7 @@ var render = function() {
                         "v-btn",
                         {
                           attrs: { color: "primary", loading: _vm.loading },
-                          on: { click: _vm.login }
+                          on: { click: _vm.testToast }
                         },
                         [_vm._v("\n            Login\n          ")]
                       )
@@ -45629,6 +45805,19 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('VueApp', _App_vue__WEBPACK_IMPORTED_MODULE_2__["default"]); // Vue.component('TheToolbar', TheToolbar)
 
 /**
+ * Global Event Bus
+ * @desc used to transmit events between components
+ * @example this.$bus.$emit('event')
+ * @example this.$bus.$on('event', () => {})
+ */
+
+var bus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({});
+Object.defineProperty(vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype, '$bus', {
+  get: function get() {
+    return bus;
+  }
+});
+/**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
@@ -45712,6 +45901,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TheNavDrawer_vue_vue_type_template_id_e1d37126_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TheNavDrawer_vue_vue_type_template_id_e1d37126_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/layout/TheToaster.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/layout/TheToaster.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TheToaster_vue_vue_type_template_id_37186e66_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TheToaster.vue?vue&type=template&id=37186e66&scoped=true& */ "./resources/js/components/layout/TheToaster.vue?vue&type=template&id=37186e66&scoped=true&");
+/* harmony import */ var _TheToaster_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TheToaster.vue?vue&type=script&lang=js& */ "./resources/js/components/layout/TheToaster.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TheToaster_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TheToaster_vue_vue_type_template_id_37186e66_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TheToaster_vue_vue_type_template_id_37186e66_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "37186e66",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/layout/TheToaster.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/layout/TheToaster.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/layout/TheToaster.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TheToaster_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TheToaster.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/layout/TheToaster.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TheToaster_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/layout/TheToaster.vue?vue&type=template&id=37186e66&scoped=true&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/layout/TheToaster.vue?vue&type=template&id=37186e66&scoped=true& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TheToaster_vue_vue_type_template_id_37186e66_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TheToaster.vue?vue&type=template&id=37186e66&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/layout/TheToaster.vue?vue&type=template&id=37186e66&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TheToaster_vue_vue_type_template_id_37186e66_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TheToaster_vue_vue_type_template_id_37186e66_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

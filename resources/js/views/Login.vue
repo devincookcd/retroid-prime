@@ -54,7 +54,7 @@
             <v-btn
               color="primary"
               :loading="loading"
-              @click="login"
+              @click="testToast"
             >
               Login
             </v-btn>
@@ -105,6 +105,12 @@ export default {
 
   // Methods
   methods: {
+
+    testToast () {
+      this.$bus.$emit('toast', {
+        text: 'TESTING'
+      })
+    },
     async login () {
       this.loading = true
       this.error = undefined
