@@ -10,7 +10,10 @@
     <v-toolbar-title>Toolbar</v-toolbar-title>
     <v-spacer />
     <v-toolbar-items>
-      <v-menu offset-y>
+      <v-menu
+        v-if="user"
+        offset-y
+      >
         <template v-slot:activator="{ on }">
           <v-btn
             class="toolbar__button"

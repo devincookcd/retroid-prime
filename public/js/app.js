@@ -2082,6 +2082,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   // Name
@@ -5973,34 +5976,85 @@ var render = function() {
       _c(
         "v-toolbar-items",
         [
-          _c(
-            "v-menu",
-            {
-              attrs: { "offset-y": "" },
-              scopedSlots: _vm._u([
+          _vm.user
+            ? _c(
+                "v-menu",
                 {
-                  key: "activator",
-                  fn: function(ref) {
-                    var on = ref.on
-                    return [
-                      _c(
-                        "v-btn",
-                        _vm._g(
-                          {
-                            staticClass: "toolbar__button",
-                            attrs: { flat: "", small: "" }
-                          },
-                          on
-                        ),
+                  attrs: { "offset-y": "" },
+                  scopedSlots: _vm._u(
+                    [
+                      {
+                        key: "activator",
+                        fn: function(ref) {
+                          var on = ref.on
+                          return [
+                            _c(
+                              "v-btn",
+                              _vm._g(
+                                {
+                                  staticClass: "toolbar__button",
+                                  attrs: { flat: "", small: "" }
+                                },
+                                on
+                              ),
+                              [
+                                _c(
+                                  "v-avatar",
+                                  {
+                                    attrs: {
+                                      size: "36px",
+                                      color: "grey lighten-1"
+                                    }
+                                  },
+                                  [
+                                    _c("v-icon", { attrs: { dark: "" } }, [
+                                      _vm._v(
+                                        "\n              person\n            "
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ]
+                        }
+                      }
+                    ],
+                    null,
+                    false,
+                    1874956642
+                  )
+                },
+                [
+                  _vm._v(" "),
+                  _c(
+                    "v-list",
+                    _vm._l(_vm.userMenu, function(item, index) {
+                      return _c(
+                        "v-list-tile",
+                        { key: index, on: { click: item.method } },
                         [
                           _c(
-                            "v-avatar",
-                            {
-                              attrs: { size: "36px", color: "grey lighten-1" }
-                            },
+                            "v-list-tile-content",
                             [
-                              _c("v-icon", { attrs: { dark: "" } }, [
-                                _vm._v("\n              person\n            ")
+                              _c("v-list-tile-title", [
+                                _vm._v(_vm._s(item.text))
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-tile-action",
+                            [
+                              _c("v-icon", [
+                                _vm._v(
+                                  "\n              " +
+                                    _vm._s(item.icon) +
+                                    "\n            "
+                                )
                               ])
                             ],
                             1
@@ -6008,48 +6062,13 @@ var render = function() {
                         ],
                         1
                       )
-                    ]
-                  }
-                }
-              ])
-            },
-            [
-              _vm._v(" "),
-              _c(
-                "v-list",
-                _vm._l(_vm.userMenu, function(item, index) {
-                  return _c(
-                    "v-list-tile",
-                    { key: index, on: { click: item.method } },
-                    [
-                      _c(
-                        "v-list-tile-content",
-                        [_c("v-list-tile-title", [_vm._v(_vm._s(item.text))])],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-list-tile-action",
-                        [
-                          _c("v-icon", [
-                            _vm._v(
-                              "\n              " +
-                                _vm._s(item.icon) +
-                                "\n            "
-                            )
-                          ])
-                        ],
-                        1
-                      )
-                    ],
+                    }),
                     1
                   )
-                }),
+                ],
                 1
               )
-            ],
-            1
-          )
+            : _vm._e()
         ],
         1
       )
