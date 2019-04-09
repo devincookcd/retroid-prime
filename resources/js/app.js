@@ -12,6 +12,7 @@ import Vuetify from 'vuetify'
 // import TheNavDrawer from './components/layout/TheNavDrawer'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 // require('./bootstrap')
 /**
  * The following block of code may be used to automatically register your
@@ -57,5 +58,6 @@ Object.defineProperty(Vue.prototype, '$bus', {
 new Vue({
 //   data: () => ({ store }),
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

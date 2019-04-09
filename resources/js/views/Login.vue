@@ -122,9 +122,11 @@ export default {
     },
 
     handleSuccessfulLogin (user) {
+      this.$store.commit('updateUser', user)
       this.$bus.$emit('toast', {
         text: `Logged in as ${user.name}`
       })
+      this.$router.push('/dashboard')
     }
   }
 }
