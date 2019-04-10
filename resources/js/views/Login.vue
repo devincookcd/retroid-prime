@@ -105,14 +105,14 @@ export default {
       try {
         const response = await Axios({
           method: 'post',
-          url: '/login',
+          url: '/oauth/token',
           data: {
             email: this.email,
             password: this.password
           }
         })
         // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
-        // Axios.defaults.headers.common['Authorization'] = response.data.token
+        Axios.defaults.headers.common['Authorization'] = `bearer ${response.data.token}`
         const user = response.data.user
         this.handleSuccessfulLogin(user)
       } catch (error) {

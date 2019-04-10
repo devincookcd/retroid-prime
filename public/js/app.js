@@ -2135,8 +2135,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.prev = 0;
                 _context.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default()({
-                  method: 'post',
-                  url: '/logout'
+                  method: 'get',
+                  url: '/api/logout'
                 });
 
               case 3:
@@ -2420,7 +2420,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 7;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default()({
                   method: 'post',
-                  url: '/login',
+                  url: '/oauth/token',
                   data: {
                     email: this.email,
                     password: this.password
@@ -2430,29 +2430,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 7:
                 response = _context.sent;
                 // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
-                // Axios.defaults.headers.common['Authorization'] = response.data.token
+                axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common['Authorization'] = "bearer ".concat(response.data.token);
                 user = response.data.user;
                 this.handleSuccessfulLogin(user);
-                _context.next = 16;
+                _context.next = 17;
                 break;
 
-              case 12:
-                _context.prev = 12;
+              case 13:
+                _context.prev = 13;
                 _context.t0 = _context["catch"](4);
                 console.dir(_context.t0);
                 this.error = _context.t0.response.data.message;
 
-              case 16:
-                _context.prev = 16;
+              case 17:
+                _context.prev = 17;
                 this.loading = false;
-                return _context.finish(16);
+                return _context.finish(17);
 
-              case 19:
+              case 20:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[4, 12, 16, 19]]);
+        }, _callee, this, [[4, 13, 17, 20]]);
       }));
 
       function login() {

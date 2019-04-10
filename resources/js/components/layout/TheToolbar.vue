@@ -106,8 +106,8 @@ export default {
     async signOut () {
       try {
         const response = await Axios({
-          method: 'post',
-          url: '/logout'
+          method: 'get',
+          url: '/api/logout'
         })
         console.log(response)
         this.$router.push('/')
