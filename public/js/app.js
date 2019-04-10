@@ -2127,6 +2127,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _signOut = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2139,21 +2140,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                this.$router.push('/');
-                _context.next = 9;
+                response = _context.sent;
+                console.log(response);
+                this.$router.push('/'); // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
+
+                this.$store.commit('updateUser', undefined);
+                _context.next = 12;
                 break;
 
-              case 6:
-                _context.prev = 6;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](0);
                 console.warn(_context.t0);
 
-              case 9:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 6]]);
+        }, _callee, this, [[0, 9]]);
       }));
 
       function signOut() {
@@ -2424,30 +2429,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 response = _context.sent;
-                axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token; // Axios.defaults.headers.common['Authorization'] = response.data.token
-
+                // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
+                // Axios.defaults.headers.common['Authorization'] = response.data.token
                 user = response.data.user;
                 this.handleSuccessfulLogin(user);
-                _context.next = 17;
+                _context.next = 16;
                 break;
 
-              case 13:
-                _context.prev = 13;
+              case 12:
+                _context.prev = 12;
                 _context.t0 = _context["catch"](4);
                 console.dir(_context.t0);
                 this.error = _context.t0.response.data.message;
 
-              case 17:
-                _context.prev = 17;
+              case 16:
+                _context.prev = 16;
                 this.loading = false;
-                return _context.finish(17);
+                return _context.finish(16);
 
-              case 20:
+              case 19:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[4, 13, 17, 20]]);
+        }, _callee, this, [[4, 12, 16, 19]]);
       }));
 
       function login() {
@@ -48312,7 +48317,11 @@ Object.defineProperty(vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype, '$bu
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  axios__WEBPACK_IMPORTED_MODULE_5___default.a.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  // Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+  axios__WEBPACK_IMPORTED_MODULE_5___default.a.defaults.headers.common = {
+    'X-CSRF-TOKEN': token.content,
+    'X-Requested-With': 'XMLHttpRequest'
+  };
   console.log(token);
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');

@@ -49,7 +49,11 @@ Object.defineProperty(Vue.prototype, '$bus', {
 let token = document.head.querySelector('meta[name="csrf-token"]')
 
 if (token) {
-  Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+  // Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+  Axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': token.content,
+    'X-Requested-With': 'XMLHttpRequest'
+  }
   console.log(token)
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')

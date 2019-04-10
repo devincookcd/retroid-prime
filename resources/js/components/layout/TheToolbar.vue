@@ -105,11 +105,14 @@ export default {
   methods: {
     async signOut () {
       try {
-        await Axios({
+        const response = await Axios({
           method: 'post',
           url: '/logout'
         })
+        console.log(response)
         this.$router.push('/')
+        // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
+        this.$store.commit('updateUser', undefined)
       } catch (error) {
         console.warn(error)
       }
