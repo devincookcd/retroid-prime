@@ -20,6 +20,29 @@ class AuthenticationController extends Controller
         if ($this->attemptLogin($request)) {
             return $this->sendLoginResponse($request);
         }
+        // $user = User::where('email', $request->email)->first();
+
+        // if ($user) {
+        //     if ($request->password == $user->password) {
+        //         $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+        //         $response = ['token' => $token];
+        //         return response($response, 200);
+        //     } else {
+        //         $response = 'Password mismatch';
+        //         return Response::json([
+        //             'success' => false,
+        //             'message' => $response,
+        //             'test' => $user->password,
+        //             'test2' => $request->password
+        //             // 'apiToken' => $current_user
+        //         ], 422);
+
+        //         // return response($response, 422);
+        //     }
+        // } else {
+        //     $response = 'User doesn\'t exist';
+        //     return response($response, 422);
+        // }
     }
 
     /**
@@ -34,11 +57,13 @@ class AuthenticationController extends Controller
         // $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
+        $token = $request->user()->createToken('Laravel Password Grant Client')->accessToken;
+        // $response = ['token' => $token];
+        // return response($response, 200);
         return Response::json([
             'success' => true,
             'user' => $request->user(),
             'token' => $request->user()->createToken('Laravel Password Grant Client')->accessToken,
-            'apiToken' => $request->user()->api_token,
             'honkler' => 'clown world'
             // 'csrfToken' => csrf_token()
             // 'apiToken' => $current_user

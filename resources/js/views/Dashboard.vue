@@ -1,5 +1,8 @@
 <template>
   <div v-if="user">
+    <h1>
+      Dashboard
+    </h1>
     Welcome Back {{ user.name }}
     <v-btn @click="getUser">
       Get User

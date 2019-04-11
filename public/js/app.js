@@ -1783,6 +1783,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_layout_TheNavDrawer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/layout/TheNavDrawer */ "./resources/js/components/layout/TheNavDrawer.vue");
 /* harmony import */ var _components_layout_TheToolbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/layout/TheToolbar */ "./resources/js/components/layout/TheToolbar.vue");
 /* harmony import */ var _components_layout_TheToaster__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/layout/TheToaster */ "./resources/js/components/layout/TheToaster.vue");
+/* harmony import */ var _components_passport_ValidateToken__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/passport/ValidateToken */ "./resources/js/components/passport/ValidateToken.vue");
 //
 //
 //
@@ -1807,6 +1808,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 
@@ -1814,7 +1818,8 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     TheNavDrawer: _components_layout_TheNavDrawer__WEBPACK_IMPORTED_MODULE_0__["default"],
     TheToolbar: _components_layout_TheToolbar__WEBPACK_IMPORTED_MODULE_1__["default"],
-    TheToaster: _components_layout_TheToaster__WEBPACK_IMPORTED_MODULE_2__["default"]
+    TheToaster: _components_layout_TheToaster__WEBPACK_IMPORTED_MODULE_2__["default"],
+    ValidateToken: _components_passport_ValidateToken__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -2142,23 +2147,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 response = _context.sent;
                 console.log(response);
-                this.$router.push('/'); // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
-
+                this.$router.push('/');
                 this.$store.commit('updateUser', undefined);
-                _context.next = 12;
+                localStorage.removeItem('token');
+                _context.next = 13;
                 break;
 
-              case 9:
-                _context.prev = 9;
+              case 10:
+                _context.prev = 10;
                 _context.t0 = _context["catch"](0);
                 console.warn(_context.t0);
 
-              case 12:
+              case 13:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 9]]);
+        }, _callee, this, [[0, 10]]);
       }));
 
       function signOut() {
@@ -2167,6 +2172,103 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return signOut;
     }()
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! es6-promise-promise */ "./node_modules/es6-promise-promise/index.js")))
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/passport/ValidateToken.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/passport/ValidateToken.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(Promise) {/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // Name
+  name: 'ValidateToken',
+  // Mounted
+  mounted: function mounted() {
+    this.validateToken();
+  },
+  // Methods
+  methods: {
+    validateToken: function () {
+      var _validateToken = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var token, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                token = localStorage.getItem('token');
+
+                if (token) {
+                  _context.next = 4;
+                  break;
+                }
+
+                this.redirectUser();
+                return _context.abrupt("return");
+
+              case 4:
+                axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
+                _context.prev = 5;
+                _context.next = 8;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/validate-token');
+
+              case 8:
+                response = _context.sent;
+                this.$store.commit('updateUser', response.data.user);
+                _context.next = 17;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](5);
+                console.warn(_context.t0);
+                this.removeToken();
+                this.redirectUser();
+
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[5, 12]]);
+      }));
+
+      function validateToken() {
+        return _validateToken.apply(this, arguments);
+      }
+
+      return validateToken;
+    }(),
+    redirectUser: function redirectUser() {
+      this.$router.replace('/');
+    },
+    removeToken: function removeToken() {
+      localStorage.removeItem('token');
+    }
+  },
+  // Render
+  render: function render() {
+    return undefined;
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! es6-promise-promise */ "./node_modules/es6-promise-promise/index.js")))
@@ -2192,6 +2294,9 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
 //
 //
 //
@@ -2420,7 +2525,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 7;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default()({
                   method: 'post',
-                  url: '/oauth/token',
+                  url: '/api/login',
                   data: {
                     email: this.email,
                     password: this.password
@@ -2429,8 +2534,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 response = _context.sent;
-                // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
-                axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common['Authorization'] = "bearer ".concat(response.data.token);
+                this.storeAccessToken(response.data.token);
                 user = response.data.user;
                 this.handleSuccessfulLogin(user);
                 _context.next = 17;
@@ -2461,6 +2565,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return login;
     }(),
+    storeAccessToken: function storeAccessToken(token) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
+      localStorage.setItem('token', token);
+    },
     handleSuccessfulLogin: function handleSuccessfulLogin(user) {
       this.$store.commit('updateUser', user);
       this.$bus.$emit('toast', {
@@ -5818,7 +5926,9 @@ var render = function() {
           _c("TheToaster")
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("ValidateToken")
     ],
     1
   )
@@ -6107,6 +6217,7 @@ var render = function() {
     ? _c(
         "div",
         [
+          _c("h1", [_vm._v("\n    Dashboard\n  ")]),
           _vm._v("\n  Welcome Back " + _vm._s(_vm.user.name) + "\n  "),
           _c("v-btn", { on: { click: _vm.getUser } }, [
             _vm._v("\n    Get User\n  ")
@@ -48570,6 +48681,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TheToolbar_vue_vue_type_template_id_6a0613b4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/passport/ValidateToken.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/passport/ValidateToken.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ValidateToken_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ValidateToken.vue?vue&type=script&lang=js& */ "./resources/js/components/passport/ValidateToken.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _ValidateToken_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/passport/ValidateToken.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/passport/ValidateToken.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/passport/ValidateToken.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ValidateToken_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ValidateToken.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/passport/ValidateToken.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ValidateToken_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 

@@ -15,6 +15,8 @@
       </v-content>
       <TheToaster />
     </v-app>
+
+    <ValidateToken />
     <!-- <FontAwsomeIcon
       icon="check-circle"
     /> -->
@@ -26,12 +28,14 @@
 import TheNavDrawer from './components/layout/TheNavDrawer'
 import TheToolbar from './components/layout/TheToolbar'
 import TheToaster from '@/components/layout/TheToaster'
+import ValidateToken from '@/components/passport/ValidateToken'
 
 export default {
   components: {
     TheNavDrawer,
     TheToolbar,
-    TheToaster
+    TheToaster,
+    ValidateToken
   },
 
   data: () => ({

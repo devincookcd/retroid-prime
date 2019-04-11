@@ -14,15 +14,20 @@ use Illuminate\Http\Request;
 */
 // Public Route
 Route::post('/login', 'AuthenticationController@login')->name('login');
-
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     // return $request->user();
-//     return 'Hello World';
+// Route::get('/check-session', function(Request $request) {
+//     return $request->user();
 // });
+
 Route::middleware('auth:api')->group(function () {
+    Route::get('/validate-token', function(Request $request) {
+        return [
+            'success' => true,
+            'message' => 'Token is valid',
+            'user'    => $request->user()
+        ];
+    });
     Route::get('/logout', 'AuthenticationController@logout')->name('logout');
-    Route::get('/user', function(Request $requset) {
+    Route::get('/user', function(Request $request) {
         return $request->user();
     });
 });

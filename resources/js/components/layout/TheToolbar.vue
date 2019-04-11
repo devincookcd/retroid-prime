@@ -111,8 +111,8 @@ export default {
         })
         console.log(response)
         this.$router.push('/')
-        // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
         this.$store.commit('updateUser', undefined)
+        localStorage.removeItem('token')
       } catch (error) {
         console.warn(error)
       }
