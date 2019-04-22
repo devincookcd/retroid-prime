@@ -9,7 +9,10 @@
       />
 
       <v-content>
-        <v-container fluid>
+        <v-container
+          grid-list-md
+          fluid
+        >
           <router-view />
         </v-container>
       </v-content>
@@ -17,10 +20,6 @@
     </v-app>
 
     <ValidateToken />
-    <!-- <FontAwsomeIcon
-      icon="check-circle"
-    /> -->
-    <!-- <router-view/> -->
   </div>
 </template>
 
@@ -28,7 +27,7 @@
 import TheNavDrawer from './components/layout/TheNavDrawer'
 import TheToolbar from './components/layout/TheToolbar'
 import TheToaster from '@/components/layout/TheToaster'
-import ValidateToken from '@/components/passport/ValidateToken'
+import ValidateToken from '@/components/auth/ValidateToken'
 
 export default {
   components: {
