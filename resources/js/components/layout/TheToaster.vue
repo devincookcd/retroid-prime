@@ -60,12 +60,19 @@ export default {
 
   // Methods
   methods: {
+    /**
+     * Queue Toast
+     * Queues up a toast in the array
+     */
     queueToast (toast) {
       this.toastQueue.push(toast)
-      console.log(this.toastQueue, toast)
       if (!this.processing) this.processQueue()
     },
 
+    /**
+     * Process Queue
+     * Show the next toast in the queue. After waiting a set time, check the queue.
+     */
     processQueue () {
       this.snackbar = true
       this.processing = true

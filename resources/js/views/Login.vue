@@ -12,6 +12,17 @@
         sm8
         md4
       >
+        <transition name="slide-y-transition">
+          <v-alert
+            v-if="user"
+            type="success"
+            :value="user"
+            class="mb-2"
+          >
+            Logged in as {{ user.name }}
+          </v-alert>
+        </transition>
+
         <v-card class="elevation-4">
           <v-toolbar
             dark
@@ -96,8 +107,19 @@ export default {
     }
   },
 
+  // Computed
+  computed: {
+    user () {
+      return this.$store.state.user
+    }
+  },
+
   // Methods
   methods: {
+    /**
+     * Login
+     * Attempt to log the user into the API
+     */
     async login () {
       if (!this.$refs.form.validate()) return
       this.loading = true
@@ -122,11 +144,21 @@ export default {
       }
     },
 
+    /**
+     * Store Access Token
+     * Keep the access token in the Authorization Header
+     * @param {String} - token
+     */
     storeAccessToken (token) {
       Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
       localStorage.setItem('token', token)
     },
 
+    /**
+     * Handle Successful Login
+     * Update the user in the store and emit a toast, redirect to Dashboard
+     * @param {Object} - user
+     */
     handleSuccessfulLogin (user) {
       this.$store.commit('updateUser', user)
       this.$bus.$emit('toast', {

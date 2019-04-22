@@ -3,7 +3,7 @@
     <h1>
       Profile
     </h1>
-    <v-form>
+    <v-form ref="form">
       <v-layout
         row
         wrap
@@ -16,6 +16,7 @@
             label="Name"
             :disabled="!isEditable"
             :value="user.name"
+            :rules="$data.$validation_rules.required"
             @input="handleUpdate('name', $event)"
           />
         </v-flex>
@@ -70,6 +71,7 @@
 
 <script>
 import Axios from 'axios'
+import validation from '@/mixins/validation'
 
 export default {
   // Name
@@ -79,7 +81,7 @@ export default {
   components: {},
 
   // Mixins
-  mixins: [],
+  mixins: [validation],
 
   // Props
   props: {},
@@ -118,7 +120,6 @@ export default {
     },
 
     handleErrors (errors) {
-      console.dir(errors)
       for (let field in errors) {
         errors[field].forEach((error) => {
           this.$bus.$emit('toast', {
@@ -126,7 +127,6 @@ export default {
             color: 'error'
           })
         })
-        // console.dir(error)
       }
     },
 
@@ -141,6 +141,7 @@ export default {
     },
 
     async saveProfile () {
+      if (!this.$refs.form.validate()) return
       this.loading = true
       try {
         const response = await Axios({

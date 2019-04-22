@@ -8,7 +8,9 @@
   >
     <v-toolbar-side-icon @click="$emit('toggle')" />
     <v-toolbar-title>Toolbar</v-toolbar-title>
+
     <v-spacer />
+
     <v-toolbar-items>
       <v-menu
         v-if="user"
@@ -36,7 +38,7 @@
           <v-list-tile
             v-for="(item, index) in userMenu"
             :key="index"
-            @click="item.method || $router.push(item.href)"
+            @click="handleClick(item)"
           >
             <v-list-tile-content>
               <v-list-tile-title>{{ item.text }}</v-list-tile-title>
@@ -60,15 +62,6 @@ export default {
   // Name
   name: 'TheToolbar',
 
-  // Components
-  components: {},
-
-  // Mixins
-  mixins: [],
-
-  // Props
-  props: {},
-
   // Data
   data () {
     return {
@@ -91,29 +84,32 @@ export default {
     }
   },
 
-  // Watch
-  watch: {},
-
-  // Created
-  created () {},
-
-  // Mounted
-  mounted () {
-  },
-
   // Methods
   methods: {
-    pushRoute (route) {
-      this.$router.push(route)
+    /**
+     * Handle Click
+     * handles the navigation items, if they have a method, call it. Otherwise, change route.
+     * @param {Object} - item
+     */
+    handleClick (item) {
+      if (typeof item.method === 'function') return item.method()
+      if (item.href) return this.$router.push(item.href)
     },
 
+    /**
+     * Sign Out
+     * Logs the user our of the api, emit a toast on success and remove the token.
+     */
     async signOut () {
       try {
         const response = await Axios({
           method: 'get',
           url: '/api/logout'
         })
-        console.log(response)
+
+        this.$bus.$emit('toast', {
+          text: response.data
+        })
         this.$router.push('/')
         this.$store.commit('updateUser', undefined)
         localStorage.removeItem('token')

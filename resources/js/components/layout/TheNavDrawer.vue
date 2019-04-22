@@ -14,7 +14,6 @@
           <v-list-tile-title>{{ item.text }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <!-- </v-list-tile> -->
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -23,12 +22,6 @@
 export default {
   // Name
   name: 'TheNavDrawer',
-
-  // Components
-  components: {},
-
-  // Mixins
-  mixins: [],
 
   // Props
   props: {
@@ -68,19 +61,7 @@ export default {
     user () {
       return this.$store.state.user
     }
-  },
-
-  // Watch
-  watch: {},
-
-  // Created
-  created () {},
-
-  // Mounted
-  mounted () {},
-
-  // Methods
-  methods: {}
+  }
 }
 </script>
 

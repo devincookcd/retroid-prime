@@ -133,6 +133,10 @@ export default {
 
   // Methods
   methods: {
+    /**
+     * Register
+     * If the form is valid, creates a new user the API
+     */
     async register () {
       if (!this.$refs.form.validate()) return
       this.loading = true
@@ -148,19 +152,18 @@ export default {
             password_confirmation: this.passwordConfirmation
           }
         })
-        console.dir(response)
-        // Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token
-        // // Axios.defaults.headers.common['Authorization'] = response.data.token
         const user = response.data.user
         this.handleSuccessfulLogin(user)
       } catch (error) {
-        console.dir(error)
         this.error = error.response.data.message
       } finally {
         this.loading = false
       }
     },
 
+    /**
+     *  Handle Successful Login
+     */
     handleSuccessfulLogin (user) {
       this.$store.commit('updateUser', user)
       this.$bus.$emit('toast', {
