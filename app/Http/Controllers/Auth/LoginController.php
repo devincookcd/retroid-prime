@@ -49,7 +49,8 @@ class LoginController extends Controller
      */
     protected function sendLoginResponse(Request $request)
     {
-        $request->session()->regenerate();
+        // $request->session()->invalidate();
+        // $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
         return Response::json([
@@ -70,14 +71,14 @@ class LoginController extends Controller
     {
         $this->guard()->logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerate();
+        // $request->session()->invalidate();
+        // $request->session()->regenerate();
         // Session::flush();
 
         return $this->loggedOut($request) ?: Response::json([
             'success' => true,
             'message' => 'Logout Successful',
-            'id' => $request->session()->all()
+            'token' => csrf_token()
         ]);
     }
 }

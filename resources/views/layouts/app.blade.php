@@ -17,7 +17,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -27,4 +26,11 @@
         <vue-app></vue-app>
     </div>
 </body>
+
+<script>
+    window.Laravel = {!! json_encode([
+        'csrfToken' => csrf_token(),
+        'apiToken' => $currentUser->api_token ?? null,
+    ]) !!};
+</script>
 </html>

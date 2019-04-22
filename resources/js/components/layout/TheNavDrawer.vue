@@ -44,17 +44,31 @@ export default {
     drawerRight: null,
     right: false,
     left: true,
-    menu: [{
+
+    basicMenu: [{
       text: 'Login',
       href: '/'
     }, {
       text: 'Register',
       href: '/register'
+    }],
+
+    userMenu: [{
+      text: 'Dashboard',
+      href: '/dashboard'
     }]
   }),
 
   // Computed
-  computed: {},
+  computed: {
+    menu () {
+      return this.user ? this.userMenu : this.basicMenu
+    },
+
+    user () {
+      return this.$store.state.user
+    }
+  },
 
   // Watch
   watch: {},

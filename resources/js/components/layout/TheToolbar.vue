@@ -36,7 +36,7 @@
           <v-list-tile
             v-for="(item, index) in userMenu"
             :key="index"
-            @click="item.method"
+            @click="item.method || $router.push(item.href)"
           >
             <v-list-tile-content>
               <v-list-tile-title>{{ item.text }}</v-list-tile-title>
@@ -75,7 +75,7 @@ export default {
       userMenu: [{
         text: 'My Profile',
         icon: 'account_circle',
-        method: this.signOut
+        href: '/profile'
       }, {
         text: 'Sign Out',
         icon: 'exit_to_app',
@@ -103,13 +103,20 @@ export default {
 
   // Methods
   methods: {
+    pushRoute (route) {
+      this.$router.push(route)
+    },
+
     async signOut () {
       try {
-        await Axios({
-          method: 'post',
-          url: '/logout'
+        const response = await Axios({
+          method: 'get',
+          url: '/api/logout'
         })
+        console.log(response)
         this.$router.push('/')
+        this.$store.commit('updateUser', undefined)
+        localStorage.removeItem('token')
       } catch (error) {
         console.warn(error)
       }

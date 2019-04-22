@@ -9,16 +9,17 @@
       />
 
       <v-content>
-        <v-container fluid>
+        <v-container
+          grid-list-md
+          fluid
+        >
           <router-view />
         </v-container>
       </v-content>
       <TheToaster />
     </v-app>
-    <!-- <FontAwsomeIcon
-      icon="check-circle"
-    /> -->
-    <!-- <router-view/> -->
+
+    <ValidateToken />
   </div>
 </template>
 
@@ -26,12 +27,14 @@
 import TheNavDrawer from './components/layout/TheNavDrawer'
 import TheToolbar from './components/layout/TheToolbar'
 import TheToaster from '@/components/layout/TheToaster'
+import ValidateToken from '@/components/auth/ValidateToken'
 
 export default {
   components: {
     TheNavDrawer,
     TheToolbar,
-    TheToaster
+    TheToaster,
+    ValidateToken
   },
 
   data: () => ({

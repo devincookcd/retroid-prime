@@ -1,12 +1,13 @@
 <template>
   <v-snackbar
+    v-if="toast"
     v-model="snackbar"
     top
+    :color="toast.color"
     :timeout="toastTimeout"
   >
     <span v-if="toast">{{ toast.text }}</span>
     <v-btn
-      color="accent"
       flat
       @click="closeToast()"
     >
@@ -28,6 +29,7 @@ export default {
       text: undefined,
       timeout: 6000,
       toast: undefined,
+      color: undefined,
       toastQueue: [],
       processing: false,
       processingTimeout: undefined,

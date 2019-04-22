@@ -105,14 +105,13 @@ export default {
       try {
         const response = await Axios({
           method: 'post',
-          url: '/login',
+          url: '/api/login',
           data: {
             email: this.email,
             password: this.password
           }
         })
-        Axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token
-        // Axios.defaults.headers.common['Authorization'] = response.data.token
+        this.storeAccessToken(response.data.token)
         const user = response.data.user
         this.handleSuccessfulLogin(user)
       } catch (error) {
@@ -121,6 +120,11 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    storeAccessToken (token) {
+      Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      localStorage.setItem('token', token)
     },
 
     handleSuccessfulLogin (user) {
