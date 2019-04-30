@@ -6,8 +6,12 @@
     app
     clipped-right
   >
-    <v-toolbar-side-icon @click="$emit('toggle')" />
-    <v-toolbar-title>Toolbar</v-toolbar-title>
+    <v-toolbar-side-icon
+      @click="$emit('toggle')"
+    />
+    <v-toolbar-title>
+      Laravel + Vuetify 123!! 456111
+    </v-toolbar-title>
 
     <v-spacer />
 

@@ -14,9 +14,10 @@
         >
           <v-text-field
             label="Name"
-            :disabled="!isEditable"
             :value="user.name"
-            :rules="$data.$validation_rules.required"
+            :disabled="!isEditable"
+            :readonly="loading"
+            :rules="[$data.$_validation_rules.required]"
             @input="handleUpdate('name', $event)"
           />
         </v-flex>
@@ -24,8 +25,13 @@
         <v-flex xs6>
           <v-text-field
             label="Email"
-            :disabled="!isEditable"
             :value="user.email"
+            :disabled="!isEditable"
+            :readonly="loading"
+            :rules="[
+              $data.$_validation_rules.required,
+              $data.$_validation_rules.email
+            ]"
             @input="handleUpdate('email', $event)"
           />
         </v-flex>
@@ -38,7 +44,7 @@
           <v-btn
             class="ml-0"
             color="secondary"
-            @click="editProfile()"
+            @click="toggleEdit()"
           >
             Edit
           </v-btn>
@@ -52,7 +58,7 @@
           <v-btn
             class="ml-0"
             :disabled="loading"
-            @click="cancelEdit()"
+            @click="toggleEdit()"
           >
             Cancel
           </v-btn>
@@ -77,14 +83,8 @@ export default {
   // Name
   name: 'Profile',
 
-  // Components
-  components: {},
-
   // Mixins
   mixins: [validation],
-
-  // Props
-  props: {},
 
   // Data
   data () {
@@ -104,21 +104,23 @@ export default {
     }
   },
 
-  // Watch
-  watch: {},
-
-  // Created
-  created () {},
-
-  // Mounted
-  mounted () {},
-
   // Methods
   methods: {
+    /**
+     * Handle Update
+     * Updates the userCopy
+     * @param {String} - field
+     * @param {String} - value
+     */
     handleUpdate (field, value) {
       this.userCopy[field] = value
     },
 
+    /**
+     * Handle Errors
+     * handle any erros from the API in toasts
+     * @param {Object} - errors
+     */
     handleErrors (errors) {
       for (let field in errors) {
         errors[field].forEach((error) => {
@@ -130,16 +132,19 @@ export default {
       }
     },
 
-    cancelEdit () {
+    /**
+     * Toggle Edit
+     * Change isEditable and reset the userCopy
+     */
+    toggleEdit () {
       this.userCopy = { ...this.user }
-      this.isEditable = false
+      this.isEditable = !this.isEditable
     },
 
-    editProfile () {
-      this.userCopy = { ...this.user }
-      this.isEditable = true
-    },
-
+    /**
+     * Save Profile
+     * Update the user using the API
+     */
     async saveProfile () {
       if (!this.$refs.form.validate()) return
       this.loading = true

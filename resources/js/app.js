@@ -8,7 +8,7 @@
 // Vue = require('vue')
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-// import 'vuetify/dist/vuetify.min.css'
+import 'vuetify/dist/vuetify.min.css'
 // import TheNavDrawer from './components/layout/TheNavDrawer'
 import App from './App.vue'
 import router from './router'
