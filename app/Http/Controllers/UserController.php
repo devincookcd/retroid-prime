@@ -34,8 +34,6 @@ class UserController extends Controller
      */
     public function save(Request $request)
     {
-        // $user = $request->user;
-
         $this->validator($request->all())->validate();
         $user = $request->user();
 
@@ -47,19 +45,5 @@ class UserController extends Controller
             'user' => $user,
             'name' => $request->name
         ];
-        // $user = New User($request->user());
-
-        // $user->update([
-        //     'name' => $request->name
-        // ]);
-
-
-        // Validate the request...
-
-        // $flight = new Flight;
-
-        // $flight->name = $request->name;
-
-        // $flight->save();
     }
 }
