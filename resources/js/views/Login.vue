@@ -62,7 +62,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              color="primary"
+              color="secondary"
               :loading="loading"
               @click="login"
             >

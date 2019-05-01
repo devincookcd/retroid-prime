@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <v-app id="v-app">
+    <v-app
+      id="v-app"
+      dark
+    >
       <the-toolbar
         @toggle="showNav = !showNav"
       />

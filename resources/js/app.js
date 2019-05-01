@@ -11,8 +11,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Axios from 'axios'
+import colors from 'vuetify/es5/util/colors'
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  theme: {
+    primary: colors.deepPurple,
+    secondary: colors.amber.darken2,
+    accent: colors.amber.lighten1,
+    error: colors.red.accent3
+  }
+})
 
 Vue.component('VueApp', App)
 

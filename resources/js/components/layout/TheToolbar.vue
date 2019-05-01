@@ -10,7 +10,7 @@
       @click="$emit('toggle')"
     />
     <v-toolbar-title>
-      Laravel + Vuetify 123!! 456111
+      Retroid Prime
     </v-toolbar-title>
 
     <v-spacer />
