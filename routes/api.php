@@ -26,9 +26,16 @@ Route::middleware('auth:api')->group(function () {
             'user'    => $request->user()
         ];
     });
+
     Route::get('/logout', 'AuthenticationController@logout')->name('logout');
+
     Route::get('/user', function(Request $request) {
         return $request->user();
+    });
+
+    Route::prefix('/boards')->group(function () {
+        Route::post('/create', 'BoardController@store');
+        Route::post('/get/{hash}', 'BoardController@store');
     });
 
     Route::post('/user/save', 'UserController@save');

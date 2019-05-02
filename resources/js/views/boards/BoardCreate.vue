@@ -9,6 +9,7 @@
     >
       <v-flex xs12>
         <v-text-field
+          v-model="name"
           label="Board Name"
           color="white"
         />
@@ -87,6 +88,7 @@
         <v-btn
           class="ma-0"
           color="secondary"
+          @click="createBoard()"
         >
           Create
           <v-icon right>
@@ -99,6 +101,8 @@
 </template>
 
 <script>
+import Axios from 'axios'
+
 export default {
   // Name
   name: 'Dashboard',
@@ -122,6 +126,7 @@ export default {
       text: 'Blue',
       value: 'blue'
     }],
+    name: undefined,
     columns: [{
       text: 'Went Well',
       color: 'green',
@@ -162,6 +167,20 @@ export default {
 
     getRandomHash () {
       return window.crypto.getRandomValues(new Uint32Array(1))[0]
+    },
+
+    async createBoard () {
+      try {
+        await Axios({
+          method: 'post',
+          url: '/api/boards/create',
+          data: {
+            name: this.name
+          }
+        })
+      } catch (error) {
+
+      }
     }
   }
 }
