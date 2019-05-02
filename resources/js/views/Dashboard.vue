@@ -1,16 +1,29 @@
 <template>
   <div v-if="user">
-    <h1>
-      Dashboard
-    </h1>
-
-    <v-layout class="mt-4">
+    <h2>
+      My Retro Boards
+    </h2>
+    <v-layout
+      class="mt-4"
+      wrap
+    >
+      <v-flex xs12>
+        <v-btn
+          class="ma-0"
+          color="secondary"
+          href="/boards/create"
+        >
+          New Retro
+          <v-icon right>
+            add
+          </v-icon>
+        </v-btn>
+      </v-flex>
       <v-flex
         xs12
-        sm8
-        md3
       >
-        <v-card
+        You Don't have Any Retro Boards yet...
+        <!-- <v-card
           color="cyan darken-2"
           class="white--text"
         >
@@ -41,7 +54,7 @@
             </v-flex>
           </v-layout>
           <v-divider light />
-        </v-card>
+        </v-card> -->
       </v-flex>
     </v-layout>
   </div>
