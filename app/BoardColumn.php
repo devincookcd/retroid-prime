@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Board extends Model
+class BoardColumn extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Board extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'color', 'key', 'order'
     ];
 
     /**
@@ -20,16 +20,14 @@ class Board extends Model
      *
      * @var string
      */
-    protected $table = 'boards';
+    protected $table = 'board_columns';
 
     //
-
     /**
      * Get the comments for the blog post.
      */
-    public function columns()
+    public function board()
     {
-        return $this->hasMany('App\BoardColumn');
+        return $this->belongsTo('App\Board');
     }
-
 }

@@ -6,6 +6,7 @@ import Register from './views/Register'
 import Dashboard from './views/Dashboard'
 import Profile from './views/Profile'
 import BoardCreate from './views/boards/BoardCreate'
+import BoardView from './views/boards/BoardView'
 
 Vue.use(Router)
 
@@ -33,6 +34,12 @@ export default new Router({
       path: '/boards/create',
       name: 'Create Retro Board',
       component: BoardCreate
+    },
+
+    {
+      path: '/boards/:hash',
+      name: 'View Retro Board',
+      component: BoardView
     },
 
     {

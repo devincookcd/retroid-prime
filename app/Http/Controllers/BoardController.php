@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Board;
+use App\BoardColumn;
 
 class BoardController extends Controller
 {
@@ -40,9 +41,26 @@ class BoardController extends Controller
         $board = new Board;
 
         $board->name = $request->name;
+        $columns = $request->columns;
+
+        // print_r($)
+        // return [
+        //     'columns' => $columns
+        // ];
+        // $columnData = array();
+
+        // foreach ($columns as $column) {
+        //     if(!empty($column)) {
+        //         // $column = new Board;
+        //     }
+        // }
         $board->url_hash = str_random(20);
 
         $board->save();
+
+        $board->columns()->createMany($columns);
+
+        // BoardColumn::insert($columns);
     }
 
     /**
@@ -55,8 +73,11 @@ class BoardController extends Controller
     {
         //
 
-        $board = App\Board::where('url_hash', $hash)->first();
+        $board = Board::where('url_hash', $hash)->first();
 
+        if (!$board) {
+            abort(404, 'Board Not Found.');
+        }
         return [
             'board' => $board
         ];

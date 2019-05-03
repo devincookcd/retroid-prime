@@ -35,7 +35,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('/boards')->group(function () {
         Route::post('/create', 'BoardController@store');
-        Route::post('/get/{hash}', 'BoardController@store');
+        Route::get('/view/{hash}', 'BoardController@show');
     });
 
     Route::post('/user/save', 'UserController@save');

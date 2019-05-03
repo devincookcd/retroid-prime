@@ -46,7 +46,7 @@
               xs3
             >
               <v-text-field
-                v-model="column.text"
+                v-model="column.name"
                 class="mb-0 column__title"
                 placeholder="Title"
                 :height="30"
@@ -128,20 +128,20 @@ export default {
     }],
     name: undefined,
     columns: [{
-      text: 'Went Well',
+      name: 'Went Well',
       color: 'green',
       key: 'honk'
     }, {
-      text: 'Needs Improvement',
+      name: 'Needs Improvement',
       color: 'red',
       key: 'beep'
     }, {
-      text: 'Action Items',
+      name: 'Action Items',
       color: 'purple',
       key: 'zoink'
     }],
     defaultColumn: {
-      text: 'New Column',
+      name: 'New Column',
       color: 'blue'
     }
   }),
@@ -150,6 +150,16 @@ export default {
   computed: {
     user () {
       return this.$store.state.user
+    },
+
+    columnData () {
+      return this.columns.map((column, index) => {
+        return {
+          name: column.name,
+          color: column.color,
+          order: index.toString()
+        }
+      })
     }
   },
 
@@ -175,7 +185,8 @@ export default {
           method: 'post',
           url: '/api/boards/create',
           data: {
-            name: this.name
+            name: this.name,
+            columns: this.columnData
           }
         })
       } catch (error) {
