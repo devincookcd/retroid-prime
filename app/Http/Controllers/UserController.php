@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\User;
+use App\Board;
 
 class UserController extends Controller
 {
@@ -24,6 +25,19 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+    }
+
+    /**
+     * Boards
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function boards(Request $request)
+    {
+        return [
+            'boards' => $request->user()->boards
+        ];
     }
 
     /**

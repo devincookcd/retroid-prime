@@ -29,8 +29,17 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/logout', 'AuthenticationController@logout')->name('logout');
 
-    Route::get('/user', function(Request $request) {
-        return $request->user();
+    // Route::get('/user', function(Request $request) {
+    //     return $request->user();
+    // });
+
+    Route::prefix('/user')->group(function () {
+
+        Route::get('/', function(Request $request) {
+            return $request->user();
+        });
+
+        Route::get('/boards', 'UserController@boards');
     });
 
     Route::prefix('/boards')->group(function () {

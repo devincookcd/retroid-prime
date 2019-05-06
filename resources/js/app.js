@@ -39,14 +39,22 @@ Object.defineProperty(Vue.prototype, '$bus', {
 
 let token = document.head.querySelector('meta[name="csrf-token"]')
 
+const axios = Axios.create({})
+
 if (token) {
-  Axios.defaults.headers.common = {
+  axios.defaults.headers.common = {
     'X-CSRF-TOKEN': token.content,
     'X-Requested-With': 'XMLHttpRequest'
   }
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
 }
+
+Object.defineProperty(Vue.prototype, '$axios', {
+  get () {
+    return axios
+  }
+})
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

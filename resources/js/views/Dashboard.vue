@@ -11,7 +11,7 @@
         <v-btn
           class="ma-0"
           color="secondary"
-          href="/boards/create"
+          to="/boards/create"
         >
           New Retro
           <v-icon right>
@@ -22,7 +22,25 @@
       <v-flex
         xs12
       >
-        You Don't have Any Retro Boards yet...
+        <div class="text-xs-center pa-2">
+          <v-progress-circular
+            v-if="loading"
+            indeterminate
+          />
+        </div>
+        <div
+          v-if="!boards && !loading"
+        >
+          You Don't have Any Retro Boards yet...
+        </div>
+        <!-- {{ boards }} -->
+
+        <BoardTable
+          v-if="boards"
+          color="white"
+          :boards="boards"
+          @board-click="handleBoardClick"
+        />
         <!-- <v-card
           color="cyan darken-2"
           class="white--text"
@@ -57,18 +75,73 @@
         </v-card> -->
       </v-flex>
     </v-layout>
+  <!-- </div> -->
   </div>
 </template>
 
 <script>
+// import Axios from 'axios'
+import BoardTable from './boards/BoardTable'
+
 export default {
   // Name
   name: 'Dashboard',
+
+  // Components
+  components: {
+    BoardTable
+  },
+
+  // Data
+  data: () => ({
+    boards: undefined,
+    loading: false
+  }),
 
   // Computed
   computed: {
     user () {
       return this.$store.state.user
+    }
+  },
+
+  watch: {
+    user: {
+      handler (newVal, oldVal) {
+        console.log(newVal, oldVal)
+        this.getBoards()
+      },
+      immediate: true
+    }
+  },
+
+  created () {
+  },
+
+  methods: {
+    async getBoards () {
+      try {
+        // console.log(Axios.defaults.headers.common['Authorization'])
+        this.loading = true
+
+        const response = await this.$axios({
+          method: 'get',
+          url: '/api/user/boards'
+        })
+
+        this.boards = response.data.boards
+      } catch (error) {
+
+      } finally {
+        this.loading = false
+      }
+    },
+
+    handleBoardClick (hash) {
+      console.log(hash)
+      this.$router.push({
+        path: `/boards/${hash}`
+      })
     }
   }
 }

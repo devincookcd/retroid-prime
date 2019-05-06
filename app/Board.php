@@ -23,6 +23,13 @@ class Board extends Model
     protected $table = 'boards';
 
     //
+    /**
+     * Get the comments for the blog post.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
     /**
      * Get the comments for the blog post.

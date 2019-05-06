@@ -1,5 +1,5 @@
 <script>
-import Axios from 'axios'
+// import Axios from 'axios'
 
 export default {
   // Name
@@ -20,10 +20,10 @@ export default {
         return
       }
 
-      Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
       try {
-        const response = await Axios.get('/api/validate-token')
+        const response = await this.$axios.get('/api/validate-token')
         this.$store.commit('updateUser', response.data.user)
       } catch (error) {
         console.warn(error)

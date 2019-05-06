@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Board;
 use App\BoardColumn;
@@ -55,6 +56,7 @@ class BoardController extends Controller
         //     }
         // }
         $board->url_hash = str_random(20);
+        $board->user_id = Auth::user()->id;
 
         $board->save();
 
@@ -74,12 +76,14 @@ class BoardController extends Controller
         //
 
         $board = Board::where('url_hash', $hash)->first();
+        $board->columns;
 
         if (!$board) {
             abort(404, 'Board Not Found.');
         }
         return [
-            'board' => $board
+            'board' => $board,
+            // 'columns' => $board->columns
         ];
 
     }
