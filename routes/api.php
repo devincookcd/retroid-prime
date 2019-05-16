@@ -47,5 +47,9 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/view/{hash}', 'BoardController@show');
     });
 
+    Route::prefix('/columns')->group(function () {
+        Route::post('/update/{id}', 'BoardColumnController@update');
+    });
+
     Route::post('/user/save', 'UserController@save');
 });
