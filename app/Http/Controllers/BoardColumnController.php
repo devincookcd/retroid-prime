@@ -38,6 +38,18 @@ class BoardColumnController extends Controller
     public function store(Request $request)
     {
         //
+        $column = new BoardColumn;
+
+        $column->color = $request->color;
+        $column->name = $request->name;
+        $column->order = $request->order;
+        $column->board_id = $request->board_id;
+
+        $column->save();
+
+        return [
+            'column' => $column
+        ];
     }
 
     /**

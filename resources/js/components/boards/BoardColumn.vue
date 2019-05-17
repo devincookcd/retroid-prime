@@ -8,15 +8,14 @@
       flat
     >
       <v-card-text>
-        <div class="d-flex mb-2">
+        <div class="board-column__name mb-2">
           <h2
-            v-if="!editable"
+            v-if="!nameEditable"
+            class="board-column__title"
           >
             {{ name }}
           </h2>
 
-          <!-- solo-inverted
-            flat -->
           <v-text-field
             v-else
             class="board-column__name-field pa-0 ma-0 mr-2"
@@ -24,52 +23,56 @@
             height="36px"
             :value="nameTemp"
             color="white"
+            :readonly="loading"
+            :loading="loading"
             @input="updateColumnName"
           />
-          <!-- <v-input
-            loading
-            value="test"
+
+          <div
+            v-if="!nameEditable"
+            class="d-flex"
           >
-            Default Slot
-          </v-input> -->
-          <!-- <v-spacer /> -->
-          <v-btn
-            v-if="!editable"
-            key="edit"
-            icon
-            flat
-            class="board-column__edit ma-0 mr-1"
-            @click="enableEditing"
+            <v-btn
+              key="edit"
+              icon
+              flat
+              class="board-column__edit ma-0 mr-1"
+              @click="enableEditing"
+            >
+              <v-icon>edit</v-icon>
+            </v-btn>
+            <v-btn
+              key="drag"
+              icon
+              flat
+              class="board-column__edit ma-0"
+            >
+              <v-icon>drag_indicator</v-icon>
+            </v-btn>
+          </div>
+          <div
+            v-else
+            class="d-flex"
           >
-            <v-icon>edit</v-icon>
-          </v-btn>
-          <v-btn
-            v-if="editable"
-            key="cancel"
-            icon
-            flat
-            class="board-column__edit ma-0 mr-1"
-            @click="cancelEditing"
-          >
-            <v-icon>cancel</v-icon>
-          </v-btn>
-          <v-btn
-            v-if="editable"
-            key="save"
-            icon
-            flat
-            class="board-column__edit ma-0 mr-1"
-            @click="saveBoardName"
-          >
-            <v-icon>save</v-icon>
-          </v-btn>
-          <!-- <v-btn
-            icon
-            flat
-            class="board-column__edit ma-0"
-          >
-            <v-icon>add</v-icon>
-          </v-btn> -->
+            <v-btn
+              key="cancel"
+              icon
+              flat
+              class="board-column__edit ma-0 mr-1"
+              @click="cancelEditing"
+            >
+              <v-icon>cancel</v-icon>
+            </v-btn>
+            <v-btn
+              key="save"
+              icon
+              flat
+              class="board-column__edit ma-0"
+              @click="saveBoardName"
+            >
+              <v-icon>save</v-icon>
+            </v-btn>
+          </div>
         </div>
 
         <v-btn
@@ -151,13 +154,17 @@ export default {
     color: {
       type: String,
       default: ''
+    },
+    editable: {
+      type: Boolean,
+      default: false
     }
   },
 
   // Data
   data () {
     return {
-      editable: false,
+      nameEditable: false,
       loading: false,
       nameTemp: undefined
     }
@@ -178,12 +185,12 @@ export default {
   // Methods
   methods: {
     enableEditing () {
-      this.editable = true
+      this.nameEditable = true
       this.nameTemp = this.name
     },
 
     cancelEditing () {
-      this.editable = false
+      this.nameEditable = false
     },
 
     updateColumnName (value) {
@@ -191,16 +198,25 @@ export default {
     },
 
     async saveBoardName () {
+      if (this.nameTemp === this.name) {
+        this.cancelEditing()
+        return
+      }
+      this.loading = true
       try {
-        await this.$axios({
+        const response = await this.$axios({
           url: `/api/columns/update/${this.columnId}`,
-          method: 'post',
+          method: 'patch',
           data: {
             name: this.nameTemp
           }
         })
+        this.$emit('name-updated', response.data.column.name)
+        this.nameEditable = false
       } catch (error) {
         console.warn(error)
+      } finally {
+        this.loading = false
       }
     }
   }
@@ -213,19 +229,22 @@ export default {
   width: 100%;
   max-width: 100%;
   flex-grow: 1;
-  // box-shadow: 0 0 3px 3px inset rgba(255, 255, 255, .5);
-  // margin: 0 4px;
-  // background-color: rgba(255, 255, 255, .10);
-
-  // border-right: 1px solid #fff;
 
   &__title {
-    // max-height: 52px;
-    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+  }
+
+  &__name {
+    display: flex;
+    flex-direction: row;
   }
 
   &__edit {
     max-width: 36px;
+    min-width: 36px;
   }
 
   &__name-field {

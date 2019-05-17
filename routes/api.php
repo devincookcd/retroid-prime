@@ -45,10 +45,12 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('/boards')->group(function () {
         Route::post('/create', 'BoardController@store');
         Route::get('/view/{hash}', 'BoardController@show');
+        Route::patch('/update/{id}', 'BoardController@update');
     });
 
     Route::prefix('/columns')->group(function () {
-        Route::post('/update/{id}', 'BoardColumnController@update');
+        Route::post('/create', 'BoardColumnController@store');
+        Route::patch('/update/{id}', 'BoardColumnController@update');
     });
 
     Route::post('/user/save', 'UserController@save');

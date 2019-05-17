@@ -109,6 +109,17 @@ class BoardController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $board = Board::findOrFail($id);
+        $board->columns;
+
+        $board->update([
+            'name' => $request->name
+        ]);
+
+        return [
+            'board' => $board,
+            'message' => 'Board name updated.'
+        ];
     }
 
     /**

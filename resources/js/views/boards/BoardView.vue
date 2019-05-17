@@ -1,9 +1,65 @@
 <template>
   <div v-if="user && board">
-    <h1>
-      {{ board.name }}
-      <!-- View Board -->
-    </h1>
+    <div class="board-name">
+      <h1 v-if="!boardNameIsEditable">
+        <span class="board-name__text mr-2">{{ board.name }}</span>
+      </h1>
+
+      <v-text-field
+        v-else
+        class="board-name__field pa-0 ma-0 mr-2 mb-4"
+        hide-details
+        :value="boardNameTemp"
+        color="white"
+        :readonly="loadingBoardName"
+        :loading="loadingBoardName"
+        @input="updateBoardName"
+      />
+
+      <span v-if="!boardNameIsEditable">
+        <v-btn
+          key="edit"
+          icon
+          flat
+          class="board-name__edit ma-0"
+          @click="editBoardName"
+        >
+          <v-icon>edit</v-icon>
+        </v-btn>
+      </span>
+
+      <span v-else>
+        <v-btn
+          key="cancel"
+          icon
+          flat
+          class="board-name__edit ma-0"
+          @click="cancelEditBoardName"
+        >
+          <v-icon>cancel</v-icon>
+        </v-btn>
+        <v-btn
+          key="save"
+          icon
+          flat
+          class="board-name__edit ma-0"
+          @click="saveBoardName"
+        >
+          <v-icon>save</v-icon>
+        </v-btn>
+      </span>
+    </div>
+
+    <div class="board-controls mb-2">
+      <v-btn
+        class="ma-0"
+        small
+        color="secondary"
+        @click="createColumn"
+      >
+        Edit Columns
+      </v-btn>
+    </div>
 
     <v-container
       pa-0
@@ -19,74 +75,8 @@
           :key="index"
           :name="column.name"
           :column-id="column.id"
+          @name-updated="updateColumnName(index, $event)"
         />
-        <!-- <v-flex
-          v-for="(column, index) in board.columns"
-          :key="index"
-          class="column"
-          xs3
-        >
-          <v-card
-            class="mt-0"
-            flat
-          >
-            <v-card-text>
-              <div class="d-flex mb-2">
-                <h2>{{ column.name }}</h2>
-                <v-btn
-                  icon
-                  flat
-                  class="column__edit ma-0"
-                >
-                  <v-icon>edit</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
-                  flat
-                  class="column__edit ma-0"
-                >
-                  <v-icon>add</v-icon>
-                </v-btn>
-              </div>
-              <v-card
-                :color="`${column.color} lighten-1`"
-                flat
-              >
-                <v-card-text>
-                  <v-textarea
-                    box
-                    auto-grow
-                    hide-details
-                    color="white"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-                  />
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn
-                    icon
-                    flat
-                    class="column__edit ma-0"
-                  >
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                icon
-                @click="removeColumn(index)"
-              >
-                <v-icon>
-                  delete
-                </v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex> -->
       </v-layout>
     </v-container>
   </div>
@@ -100,22 +90,37 @@ export default {
   // Name
   name: 'BoardView',
 
+  // Components
   components: {
     BoardColumn
   },
 
   // Data
   data: () => ({
-    board: undefined
+    board: undefined,
+    boardNameIsEditable: false,
+    boardNameTemp: undefined,
+    loadingBoardName: false,
+    loadingColumn: false,
+    defaultColumn: {
+      name: 'New Column',
+      color: 'blue'
+    }
   }),
 
   // Computed
   computed: {
     user () {
       return this.$store.state.user
+    },
+
+    boardId () {
+      if (!this.board) return
+      return this.board.id
     }
   },
 
+  // Watch
   watch: {
     user: {
       handler (newVal, oldVal) {
@@ -127,20 +132,70 @@ export default {
     }
   },
 
-  // created () {
-  //   this.getBoard()
-  // },
-
   // Methods
   methods: {
-    addColumn () {
+    async createColumn () {
       let column = { ...this.defaultColumn }
-      column.key = this.getRandomHash()
-      this.columns.push(column)
+      column.order = this.board.columns.length
+
+      try {
+        this.loadingColumn = true
+        const response = await this.$axios({
+          url: '/api/columns/create',
+          method: 'post',
+          data: {
+            color: column.color,
+            name: column.name,
+            order: column.order,
+            board_id: this.board.id
+          }
+        })
+        this.board.columns.push(response.data.column)
+      } catch (error) {
+        console.warn(error)
+      } finally {
+        this.loadingColumn = false
+      }
+      // column.key = this.getRandomHash()
+      // this.columns.push(column)
     },
 
     removeColumn (index) {
       this.columns.splice(index, 1)
+    },
+
+    editBoardName () {
+      this.boardNameTemp = this.board.name
+      this.boardNameIsEditable = true
+    },
+
+    cancelEditBoardName () {
+      this.boardNameIsEditable = false
+    },
+
+    async saveBoardName () {
+      try {
+        if (this.boardNameTemp === this.board.name) return
+        this.loadingBoardName = true
+        const response = await this.$axios({
+          url: `/api/boards/update/${this.boardId}`,
+          method: 'patch',
+          data: {
+            name: this.boardNameTemp
+          }
+        })
+        this.board = response.data.board
+      } catch (error) {
+        console.warn(error)
+      } finally {
+        this.boardNameIsEditable = false
+        this.loading = false
+      }
+      // this.boardNameTemp = value
+    },
+
+    updateBoardName (value) {
+      this.boardNameTemp = value
     },
 
     getRandomHash () {
@@ -160,33 +215,40 @@ export default {
       } catch (error) {
 
       }
+    },
+
+    updateColumnName (index, value) {
+      this.board.columns[index].name = value
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+.board-name {
+  display: flex;
+  align-items: flex-start;
+  height: 56px;
+
+  &__text {
+    max-width: 500px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &__field {
+    max-width: 500px;
+    font-size: 2em;
+    font-weight: bold;
+    position: relative;
+    top: 5px;
+    text-rendering: optimizelegibility;
+  }
+}
+
 .columns {
   overflow-x: auto;
-}
-.column {
-  min-width: 25%;
-  width: 100%;
-  max-width: 100%;
-  flex-grow: 1;
-  // box-shadow: 0 0 3px 3px inset rgba(255, 255, 255, .5);
-  // margin: 0 4px;
-  // background-color: rgba(255, 255, 255, .10);
-
-  // border-right: 1px solid #fff;
-
-  &__title {
-    // max-height: 52px;
-    font-weight: 500;
-  }
-
-  &__edit {
-    max-width: 36px;
-  }
 }
 </style>
