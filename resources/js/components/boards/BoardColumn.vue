@@ -45,7 +45,7 @@
               key="drag"
               icon
               flat
-              class="board-column__edit ma-0"
+              class="board-column__edit drag-handle ma-0"
             >
               <v-icon>drag_indicator</v-icon>
             </v-btn>
@@ -148,8 +148,8 @@ export default {
       default: ''
     },
     columnId: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     },
     color: {
       type: String,
@@ -253,5 +253,9 @@ export default {
     font-weight: 700;
     top: -3px;
   }
+}
+
+.drag-handle {
+  cursor: move;
 }
 </style>

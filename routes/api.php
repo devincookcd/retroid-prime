@@ -50,6 +50,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('/columns')->group(function () {
         Route::post('/create', 'BoardColumnController@store');
+        Route::patch('/reorder', 'BoardColumnController@reorder');
         Route::patch('/update/{id}', 'BoardColumnController@update');
     });
 

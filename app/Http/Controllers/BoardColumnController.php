@@ -6,9 +6,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Board;
 use App\BoardColumn;
+// use Spatie\EloquentSortable\Sortable;
+// use Spatie\EloquentSortable\SortableTrait;
 
 class BoardColumnController extends Controller
 {
+    // use SortableTrait;
+
+    // public $sortable = [
+    //     'order_column_name' => 'order',
+    //     'sort_when_creating' => true,
+    // ];
+
     /**
      * Display a listing of the resource.
      *
@@ -95,6 +104,30 @@ class BoardColumnController extends Controller
         return [
             'column' => $column,
             'message' => 'Column name updated.'
+        ];
+    }
+
+    /**
+     * Reorder the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reorder(Request $request)
+    {
+        //
+        $order = $request->order;
+        BoardColumn::setNewOrder($order);
+        // $column = BoardColumn::where('id', $id)->first();
+        // $column = BoardColumn::findOrFail($id);
+
+        // $column->update([
+        //     'name' => $request->name
+        // ]);
+
+        return [
+            'message' => 'Column order updated.'
         ];
     }
 

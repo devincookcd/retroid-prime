@@ -36,7 +36,7 @@ class Board extends Model
      */
     public function columns()
     {
-        return $this->hasMany('App\BoardColumn');
+        return $this->hasMany('App\BoardColumn')->orderBy('order');
     }
 
 }

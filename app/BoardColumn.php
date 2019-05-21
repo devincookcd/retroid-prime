@@ -3,9 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
-class BoardColumn extends Model
+class BoardColumn extends Model implements Sortable
 {
+    use SortableTrait;
+
+    public $sortable = [
+        'order_column_name' => 'order',
+        'sort_when_creating' => true,
+    ];
     /**
      * The attributes that are mass assignable.
      *

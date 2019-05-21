@@ -67,8 +67,15 @@
       fluid
       grid-list-lg
     >
-      <v-layout
+      <!-- <v-layout
         class="columns"
+      > -->
+      <Draggable
+        v-model="board.columns"
+        tag="v-layout"
+        class="columns"
+        handle=".drag-handle"
+        @end="reorderColumns"
       >
         <BoardColumn
           v-for="(column, index) in board.columns"
@@ -77,7 +84,8 @@
           :column-id="column.id"
           @name-updated="updateColumnName(index, $event)"
         />
-      </v-layout>
+      </Draggable>
+      <!-- </v-layout> -->
     </v-container>
   </div>
 </template>
@@ -85,6 +93,7 @@
 <script>
 import Axios from 'axios'
 import BoardColumn from '@/components/boards/BoardColumn'
+import Draggable from 'vuedraggable'
 
 export default {
   // Name
@@ -92,6 +101,7 @@ export default {
 
   // Components
   components: {
+    Draggable,
     BoardColumn
   },
 
@@ -156,12 +166,32 @@ export default {
       } finally {
         this.loadingColumn = false
       }
-      // column.key = this.getRandomHash()
-      // this.columns.push(column)
     },
 
     removeColumn (index) {
       this.columns.splice(index, 1)
+    },
+
+    async reorderColumns () {
+      let order = []
+      this.board.columns.forEach(column => {
+        order.push(column.id)
+        // return element
+      })
+      console.log(order)
+
+      try {
+        const response = await this.$axios({
+          url: '/api/columns/reorder',
+          method: 'patch',
+          data: {
+            order
+          }
+        })
+        console.log(response)
+      } catch (error) {
+
+      }
     },
 
     editBoardName () {
