@@ -1,58 +1,17 @@
 <template>
   <div v-if="user && board">
-    <div class="board-name">
-      <h1 v-if="!boardNameIsEditable">
-        <span class="board-name__text mr-2">{{ board.name }}</span>
-      </h1>
-
-      <v-text-field
-        v-else
-        class="board-name__field pa-0 ma-0 mr-2 mb-4"
-        hide-details
-        :value="boardNameTemp"
-        color="white"
-        :readonly="loadingBoardName"
-        :loading="loadingBoardName"
-        @input="updateBoardName"
-      />
-
-      <span v-if="!boardNameIsEditable">
-        <v-btn
-          key="edit"
-          icon
-          flat
-          class="board-name__edit ma-0"
-          @click="editBoardName"
-        >
-          <v-icon>edit</v-icon>
-        </v-btn>
-      </span>
-
-      <span v-else>
-        <v-btn
-          key="cancel"
-          icon
-          flat
-          class="board-name__edit ma-0"
-          @click="cancelEditBoardName"
-        >
-          <v-icon>cancel</v-icon>
-        </v-btn>
-        <v-btn
-          key="save"
-          icon
-          flat
-          class="board-name__edit ma-0"
-          @click="saveBoardName"
-        >
-          <v-icon>save</v-icon>
-        </v-btn>
-      </span>
-    </div>
+    <BoardName
+      :name="board.name"
+      :board-id="boardId"
+      :is-editable="boardNameIsEditable"
+      @edit="boardNameIsEditable = true"
+      @edit-cancel="boardNameIsEditable = false"
+      @update-board="board = $event"
+    />
 
     <BoardControls
       :is-editable="boardColumnsEditable"
-      :board-id="board.id"
+      :board-id="boardId"
       @toggle-editable="boardColumnsEditable = !boardColumnsEditable"
       @add-column="addColumn"
     />
@@ -88,6 +47,7 @@
 import Axios from 'axios'
 import BoardColumn from '@/components/boards/BoardColumn'
 import BoardControls from '@/components/boards/BoardControls'
+import BoardName from '@/components/boards/BoardName'
 import Draggable from 'vuedraggable'
 
 export default {
@@ -98,16 +58,15 @@ export default {
   components: {
     Draggable,
     BoardColumn,
-    BoardControls
+    BoardControls,
+    BoardName
   },
 
   // Data
   data: () => ({
     board: undefined,
     boardNameIsEditable: false,
-    boardNameTemp: undefined,
-    boardColumnsEditable: false,
-    loadingBoardName: false
+    boardColumnsEditable: false
   }),
 
   // Computed
@@ -148,9 +107,7 @@ export default {
       let order = []
       this.board.columns.forEach(column => {
         order.push(column.id)
-        // return element
       })
-      console.log(order)
 
       try {
         const response = await this.$axios({
@@ -164,44 +121,6 @@ export default {
       } catch (error) {
 
       }
-    },
-
-    editBoardName () {
-      this.boardNameTemp = this.board.name
-      this.boardNameIsEditable = true
-    },
-
-    cancelEditBoardName () {
-      this.boardNameIsEditable = false
-    },
-
-    async saveBoardName () {
-      try {
-        if (this.boardNameTemp === this.board.name) return
-        this.loadingBoardName = true
-        const response = await this.$axios({
-          url: `/api/boards/update/${this.boardId}`,
-          method: 'patch',
-          data: {
-            name: this.boardNameTemp
-          }
-        })
-        this.board = response.data.board
-      } catch (error) {
-        console.warn(error)
-      } finally {
-        this.boardNameIsEditable = false
-        this.loading = false
-      }
-      // this.boardNameTemp = value
-    },
-
-    updateBoardName (value) {
-      this.boardNameTemp = value
-    },
-
-    getRandomHash () {
-      return window.crypto.getRandomValues(new Uint32Array(1))[0]
     },
 
     async getBoard () {
@@ -227,29 +146,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.board-name {
-  display: flex;
-  align-items: flex-start;
-  height: 56px;
-
-  &__text {
-    max-width: 500px;
-    text-overflow: ellipsis;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  &__field {
-    max-width: 500px;
-    font-size: 2em;
-    font-weight: bold;
-    position: relative;
-    top: 5px;
-    text-rendering: optimizelegibility;
-  }
-}
-
 .columns {
   overflow-x: auto;
 }
