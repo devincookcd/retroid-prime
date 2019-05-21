@@ -50,16 +50,12 @@
       </span>
     </div>
 
-    <div class="board-controls mb-2">
-      <v-btn
-        class="ma-0"
-        small
-        color="secondary"
-        @click="createColumn"
-      >
-        Edit Columns
-      </v-btn>
-    </div>
+    <BoardControls
+      :is-editable="boardColumnsEditable"
+      :board-id="board.id"
+      @toggle-editable="boardColumnsEditable = !boardColumnsEditable"
+      @add-column="addColumn"
+    />
 
     <v-container
       pa-0
@@ -67,9 +63,6 @@
       fluid
       grid-list-lg
     >
-      <!-- <v-layout
-        class="columns"
-      > -->
       <Draggable
         v-model="board.columns"
         tag="v-layout"
@@ -82,10 +75,11 @@
           :key="index"
           :name="column.name"
           :column-id="column.id"
+          :editable="boardColumnsEditable"
           @name-updated="updateColumnName(index, $event)"
+          @delete="removeColumn(index)"
         />
       </Draggable>
-      <!-- </v-layout> -->
     </v-container>
   </div>
 </template>
@@ -93,6 +87,7 @@
 <script>
 import Axios from 'axios'
 import BoardColumn from '@/components/boards/BoardColumn'
+import BoardControls from '@/components/boards/BoardControls'
 import Draggable from 'vuedraggable'
 
 export default {
@@ -102,7 +97,8 @@ export default {
   // Components
   components: {
     Draggable,
-    BoardColumn
+    BoardColumn,
+    BoardControls
   },
 
   // Data
@@ -110,12 +106,8 @@ export default {
     board: undefined,
     boardNameIsEditable: false,
     boardNameTemp: undefined,
-    loadingBoardName: false,
-    loadingColumn: false,
-    defaultColumn: {
-      name: 'New Column',
-      color: 'blue'
-    }
+    boardColumnsEditable: false,
+    loadingBoardName: false
   }),
 
   // Computed
@@ -144,32 +136,12 @@ export default {
 
   // Methods
   methods: {
-    async createColumn () {
-      let column = { ...this.defaultColumn }
-      column.order = this.board.columns.length
-
-      try {
-        this.loadingColumn = true
-        const response = await this.$axios({
-          url: '/api/columns/create',
-          method: 'post',
-          data: {
-            color: column.color,
-            name: column.name,
-            order: column.order,
-            board_id: this.board.id
-          }
-        })
-        this.board.columns.push(response.data.column)
-      } catch (error) {
-        console.warn(error)
-      } finally {
-        this.loadingColumn = false
-      }
+    addColumn (column) {
+      this.board.columns.push(column)
     },
 
     removeColumn (index) {
-      this.columns.splice(index, 1)
+      this.board.columns.splice(index, 1)
     },
 
     async reorderColumns () {

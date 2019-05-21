@@ -52,6 +52,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/create', 'BoardColumnController@store');
         Route::patch('/reorder', 'BoardColumnController@reorder');
         Route::patch('/update/{id}', 'BoardColumnController@update');
+        Route::delete('/delete/{id}', 'BoardColumnController@destroy');
     });
 
     Route::post('/user/save', 'UserController@save');

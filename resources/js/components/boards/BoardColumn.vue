@@ -7,6 +7,13 @@
       class="mt-0"
       flat
     >
+      <v-system-bar
+        v-if="editable"
+        window
+        color="blue-grey drag-handle"
+      >
+        <v-icon>drag_indicator</v-icon>
+      </v-system-bar>
       <v-card-text>
         <div class="board-column__name mb-2">
           <h2
@@ -29,49 +36,54 @@
           />
 
           <div
-            v-if="!nameEditable"
-            class="d-flex"
+            v-if="editable"
           >
-            <v-btn
-              key="edit"
-              icon
-              flat
-              class="board-column__edit ma-0 mr-1"
-              @click="enableEditing"
+            <div
+              v-if="!nameEditable"
+              class="d-flex"
             >
-              <v-icon>edit</v-icon>
-            </v-btn>
-            <v-btn
-              key="drag"
-              icon
-              flat
-              class="board-column__edit drag-handle ma-0"
+              <v-btn
+                key="edit"
+                icon
+                flat
+                class="board-column__edit ma-0 mr-1"
+                @click="enableEditing"
+              >
+                <v-icon>edit</v-icon>
+              </v-btn>
+              <v-btn
+                key="drag"
+                icon
+                flat
+                class="board-column__edit ma-0"
+                @click="showDeleteDialog = true"
+              >
+                <v-icon>delete</v-icon>
+              </v-btn>
+            </div>
+            <div
+              v-else
+              class="d-flex"
             >
-              <v-icon>drag_indicator</v-icon>
-            </v-btn>
-          </div>
-          <div
-            v-else
-            class="d-flex"
-          >
-            <v-btn
-              key="cancel"
-              icon
-              flat
-              class="board-column__edit ma-0 mr-1"
-              @click="cancelEditing"
-            >
-              <v-icon>cancel</v-icon>
-            </v-btn>
-            <v-btn
-              key="save"
-              icon
-              flat
-              class="board-column__edit ma-0"
-              @click="saveBoardName"
-            >
-              <v-icon>save</v-icon>
-            </v-btn>
+              <v-btn
+                key="cancel"
+                icon
+                flat
+                class="board-column__edit ma-0 mr-1"
+                @click="cancelEditing"
+              >
+                <v-icon>cancel</v-icon>
+              </v-btn>
+              <v-btn
+                key="save"
+                icon
+                flat
+                class="board-column__edit ma-0"
+                @click="saveBoardName"
+              >
+                <v-icon>save</v-icon>
+              </v-btn>
+            </div>
           </div>
         </div>
 
@@ -125,18 +137,30 @@
         </v-btn>
       </v-card-actions> -->
     </v-card>
+
+    <BoardColumnDeleteDialog
+      v-model="showDeleteDialog"
+      :column-name="name"
+      :column-id="columnId"
+      @input="showDeleteDialog = $event"
+      @hide="showDeleteDialog = false"
+      @delete="$emit('delete')"
+    />
   </v-flex>
 </template>
 
 <script>
 // import Axios from 'axios'
+import BoardColumnDeleteDialog from '@/components/dialogs/BoardColumnDeleteDialog'
 
 export default {
   // Name
   name: 'BoardColumn',
 
   // Components
-  components: {},
+  components: {
+    BoardColumnDeleteDialog
+  },
 
   // Mixins
   mixins: [],
@@ -166,7 +190,8 @@ export default {
     return {
       nameEditable: false,
       loading: false,
-      nameTemp: undefined
+      nameTemp: undefined,
+      showDeleteDialog: false
     }
   },
 
@@ -219,6 +244,10 @@ export default {
         this.loading = false
       }
     }
+
+    // handleDelete (board) {
+    //   this.$emit('delete')
+    // }
   }
 }
 </script>
@@ -252,6 +281,11 @@ export default {
     font-size: 21px;
     font-weight: 700;
     top: -3px;
+  }
+
+  &__icon {
+    cursor: pointer;
+    border-radius: 50%;
   }
 }
 

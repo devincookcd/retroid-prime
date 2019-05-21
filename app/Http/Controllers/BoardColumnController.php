@@ -140,5 +140,16 @@ class BoardColumnController extends Controller
     public function destroy($id)
     {
         //
+        $column = BoardColumn::findOrFail($id);
+
+        $column->delete();
+
+        // $board = Board::findOrFail($column->board_id);
+        // $board->columns;
+
+        return [
+            'message' => 'Column deleted successfully.',
+            // 'board' => $board
+        ];
     }
 }
