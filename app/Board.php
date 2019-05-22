@@ -39,4 +39,12 @@ class Board extends Model
         return $this->hasMany('App\BoardColumn')->orderBy('order');
     }
 
+    /**
+     * Get the comments for the blog post.
+     */
+    public function items()
+    {
+        return $this->hasMany('App\BoardItem') ;
+    }
+
 }

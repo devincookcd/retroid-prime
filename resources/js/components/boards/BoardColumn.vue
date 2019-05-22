@@ -103,7 +103,7 @@
           v-if="!showNewItem"
           outline
           block
-          class="ma-0 mb-3"
+          class="ma-0"
           @click="showNewItem = true"
         >
           <v-icon>add</v-icon>
@@ -112,9 +112,25 @@
           v-else
           v-model="newBoardItem"
           :color="color"
-          new
+          new-item
           @cancel="cancelNewItem"
+          @save="createItem"
         />
+
+        <div
+          v-if="items.length > 0"
+          class="board-column__items mt-3"
+        >
+          <BoardItem
+            v-for="item in items"
+            :key="item.id"
+            :value="item.text"
+            :color="color"
+            :editable="false"
+            @cancel="cancelNewItem"
+            @save="createItem"
+          />
+        </div>
         <!-- <div class="text-xs-center mt-4">
           No Items Yet
         </div> -->
@@ -203,6 +219,10 @@ export default {
       type: Number,
       default: null
     },
+    boardId: {
+      type: Number,
+      default: null
+    },
     color: {
       type: String,
       default: ''
@@ -210,6 +230,10 @@ export default {
     editable: {
       type: Boolean,
       default: false
+    },
+    items: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -252,6 +276,22 @@ export default {
 
     updateColumnName (value) {
       this.nameTemp = value
+    },
+
+    async createItem () {
+      try {
+        await this.$axios({
+          url: '/api/items/create',
+          method: 'post',
+          data: {
+            text: this.newBoardItem,
+            board_id: this.boardId,
+            board_column_id: this.columnId
+          }
+        })
+      } catch (error) {
+        console.warn(error)
+      }
     },
 
     async saveColumn () {

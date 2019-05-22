@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Board;
+use App\BoardColumn;
+use App\BoardItem;
 
 class BoardItemController extends Controller
 {
@@ -35,6 +38,17 @@ class BoardItemController extends Controller
     public function store(Request $request)
     {
         //
+        $item = new BoardItem;
+
+        $item->text = $request->text;
+        $item->board_column_id = $request->board_column_id;
+        $item->board_id = $request->board_id;
+
+        $item->save();
+
+        return [
+            'item' => $item
+        ];
     }
 
     /**

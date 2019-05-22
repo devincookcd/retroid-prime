@@ -32,10 +32,18 @@ class BoardColumn extends Model implements Sortable
 
     //
     /**
-     * Get the comments for the blog post.
+     * Get the board for the board column
      */
     public function board()
     {
         return $this->belongsTo('App\Board');
+    }
+
+    /**
+     * Get the board items for the board column
+     */
+    public function items()
+    {
+        return $this->hasMany('App\BoardItem');
     }
 }

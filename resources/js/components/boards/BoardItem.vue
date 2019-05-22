@@ -1,11 +1,18 @@
 <template>
   <v-card
+    class="board-item"
     :color="`${color} lighten-1`"
     flat
   >
     <v-card-text>
+      <div
+        v-if="!editable && !newItem"
+        class="board-item__text"
+      >
+        {{ value }}
+      </div>
       <v-textarea
-        :label="false"
+        v-else
         box
         auto-grow
         hide-details
@@ -19,22 +26,40 @@
 
     <v-card-actions class="pt-0">
       <v-spacer />
-      <v-btn
-        icon
-        flat
-        class="column__edit"
-        @click="$emit('cancel')"
+      <div
+        v-if="!editable && !newItem"
+        class="board-item__buttons"
       >
-        <v-icon>cancel</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        flat
-        class="column__edit"
-        @click="$emit('save')"
+        <v-btn
+          icon
+          flat
+          class="column__edit"
+          @click="$emit('cancel')"
+        >
+          <v-icon>edit</v-icon>
+        </v-btn>
+      </div>
+      <div
+        v-else
+        class="board-item__buttons"
       >
-        <v-icon>check</v-icon>
-      </v-btn>
+        <v-btn
+          icon
+          flat
+          class="column__edit"
+          @click="$emit('cancel')"
+        >
+          <v-icon>cancel</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          flat
+          class="column__edit"
+          @click="validateAndSave"
+        >
+          <v-icon>check</v-icon>
+        </v-btn>
+      </div>
     </v-card-actions>
   </v-card>
 </template>
@@ -56,7 +81,11 @@ export default {
       type: String,
       default: 'blue-grey'
     },
-    new: {
+    newItem: {
+      type: Boolean,
+      default: false
+    },
+    editable: {
       type: Boolean,
       default: false
     },
@@ -86,7 +115,12 @@ export default {
   mounted () {},
 
   // Methods
-  methods: {}
+  methods: {
+    validateAndSave () {
+      if (!this.value) return
+      this.$emit('save')
+    }
+  }
 }
 </script>
 

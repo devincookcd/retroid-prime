@@ -75,8 +75,8 @@ class BoardController extends Controller
     {
         //
 
-        $board = Board::where('url_hash', $hash)->first();
-        $board->columns;
+        $board = Board::where('url_hash', $hash)->with('columns.items')->first();
+        // $board->columns;
 
         if (!$board) {
             abort(404, 'Board Not Found.');
@@ -110,7 +110,7 @@ class BoardController extends Controller
     {
         //
         $board = Board::findOrFail($id);
-        $board->columns;
+        // $board->columns;
 
         $board->update([
             'name' => $request->name
