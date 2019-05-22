@@ -1,77 +1,48 @@
 <template>
-  <v-flex
-    class="column"
-    xs3
+  <v-card
+    :color="`${color} lighten-1`"
+    flat
   >
-    <v-card
-      class="mt-0"
-      flat
-    >
-      <v-card-text>
-        <div class="d-flex mb-2">
-          <h2>{{ column.name }}</h2>
-          <!-- <v-spacer /> -->
-          <v-btn
-            icon
-            flat
-            class="column__edit ma-0"
-          >
-            <v-icon>edit</v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            flat
-            class="column__edit ma-0"
-          >
-            <v-icon>add</v-icon>
-          </v-btn>
-        </div>
-        <v-card
-          :color="`${column.color} lighten-1`"
-          flat
-        >
-          <v-card-text>
-            <v-textarea
-              :label="false"
-              box
-              auto-grow
-              hide-details
-              color="white"
-              value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-            />
-          </v-card-text>
+    <v-card-text>
+      <v-textarea
+        :label="false"
+        box
+        auto-grow
+        hide-details
+        rows="3"
+        color="white"
+        placeholder="Enter a note."
+        :value="value"
+        @input="$emit('input', $event)"
+      />
+    </v-card-text>
 
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              icon
-              flat
-              class="column__edit ma-0"
-            >
-              <v-icon>edit</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn
-          icon
-          @click="removeColumn(index)"
-        >
-          <v-icon>
-            delete
-          </v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-flex>
+    <v-card-actions class="pt-0">
+      <v-spacer />
+      <v-btn
+        icon
+        flat
+        class="column__edit"
+        @click="$emit('cancel')"
+      >
+        <v-icon>cancel</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        flat
+        class="column__edit"
+        @click="$emit('save')"
+      >
+        <v-icon>check</v-icon>
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 export default {
   // Name
-  name: 'Component',
+  name: 'BoardItem',
 
   // Components
   components: {},
@@ -80,7 +51,20 @@ export default {
   mixins: [],
 
   // Props
-  props: {},
+  props: {
+    color: {
+      type: String,
+      default: 'blue-grey'
+    },
+    new: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: String,
+      default: ''
+    }
+  },
 
   // Data
   data () {

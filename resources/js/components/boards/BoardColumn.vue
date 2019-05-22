@@ -100,13 +100,21 @@
         </div>
 
         <v-btn
+          v-if="!showNewItem"
           outline
           block
-          class="ma-0"
+          class="ma-0 mb-3"
+          @click="showNewItem = true"
         >
           <v-icon>add</v-icon>
         </v-btn>
-
+        <BoardItem
+          v-else
+          v-model="newBoardItem"
+          :color="color"
+          new
+          @cancel="cancelNewItem"
+        />
         <!-- <div class="text-xs-center mt-4">
           No Items Yet
         </div> -->
@@ -120,19 +128,27 @@
               box
               auto-grow
               hide-details
+              rows="3"
               color="white"
               value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
             />
           </v-card-text>
 
-          <v-card-actions>
+          <v-card-actions class="pt-0">
             <v-spacer />
             <v-btn
               icon
               flat
               class="column__edit ma-0"
             >
-              <v-icon>edit</v-icon>
+              <v-icon>cancel</v-icon>
+            </v-btn>
+            <v-btn
+              icon
+              flat
+              class="column__edit ma-0"
+            >
+              <v-icon>check</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card> -->
@@ -164,6 +180,7 @@
 <script>
 // import Axios from 'axios'
 import BoardColumnDeleteDialog from '@/components/dialogs/BoardColumnDeleteDialog'
+import BoardItem from '@/components/boards/BoardItem'
 import ColorSelect from '@/components/inputs/ColorSelect'
 export default {
   // Name
@@ -172,6 +189,7 @@ export default {
   // Components
   components: {
     BoardColumnDeleteDialog,
+    BoardItem,
     ColorSelect
   },
 
@@ -202,6 +220,8 @@ export default {
       loading: false,
       colorTemp: undefined,
       nameTemp: undefined,
+      newBoardItem: undefined,
+      showNewItem: false,
       showDeleteDialog: false
     }
   },
@@ -223,6 +243,11 @@ export default {
 
     cancelEditing () {
       this.nameEditable = false
+    },
+
+    cancelNewItem () {
+      this.newBoardItem = undefined
+      this.showNewItem = false
     },
 
     updateColumnName (value) {
@@ -308,5 +333,11 @@ export default {
 
 .drag-handle {
   cursor: move;
+}
+</style>
+
+<style>
+.v-textarea.v-text-field--enclosed textarea {
+  margin-top: 0;
 }
 </style>
