@@ -33,9 +33,10 @@
           v-for="(column, index) in board.columns"
           :key="index"
           :name="column.name"
+          :color="column.color"
           :column-id="column.id"
           :editable="boardColumnsEditable"
-          @name-updated="updateColumnName(index, $event)"
+          @column-updated="updateColumn(index, $event)"
           @delete="removeColumn(index)"
         />
       </Draggable>
@@ -138,8 +139,9 @@ export default {
       }
     },
 
-    updateColumnName (index, value) {
-      this.board.columns[index].name = value
+    updateColumn (index, value) {
+      this.$set(this.board.columns, index, value)
+      // this.board.columns[index] = value
     }
   }
 }

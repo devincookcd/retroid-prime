@@ -98,7 +98,8 @@ class BoardColumnController extends Controller
         $column = BoardColumn::findOrFail($id);
 
         $column->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'color' => $request->color
         ]);
 
         return [

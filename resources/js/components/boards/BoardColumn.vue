@@ -16,24 +16,36 @@
       </v-system-bar>
       <v-card-text>
         <div class="board-column__name mb-2">
+          <div
+            class="board-column__color"
+            :class="displayColor"
+          />
+
           <h2
-            v-if="!nameEditable"
+            v-if="!nameEditable || !editable"
             class="board-column__title"
           >
             {{ name }}
           </h2>
 
-          <v-text-field
+          <div
             v-else
-            class="board-column__name-field pa-0 ma-0 mr-2"
-            hide-details
-            height="36px"
-            :value="nameTemp"
-            color="white"
-            :readonly="loading"
-            :loading="loading"
-            @input="updateColumnName"
-          />
+            class="board-column__fields"
+          >
+            <v-text-field
+              class="board-column__name-field pa-0 ma-0 mr-2"
+              hide-details
+              height="36px"
+              :value="nameTemp"
+              color="white"
+              :readonly="loading"
+              :loading="loading"
+              @input="updateColumnName"
+            />
+            <ColorSelect
+              v-model="colorTemp"
+            />
+          </div>
 
           <div
             v-if="editable"
@@ -79,7 +91,7 @@
                 icon
                 flat
                 class="board-column__edit ma-0"
-                @click="saveBoardName"
+                @click="saveColumn"
               >
                 <v-icon>save</v-icon>
               </v-btn>
@@ -152,18 +164,16 @@
 <script>
 // import Axios from 'axios'
 import BoardColumnDeleteDialog from '@/components/dialogs/BoardColumnDeleteDialog'
-
+import ColorSelect from '@/components/inputs/ColorSelect'
 export default {
   // Name
   name: 'BoardColumn',
 
   // Components
   components: {
-    BoardColumnDeleteDialog
+    BoardColumnDeleteDialog,
+    ColorSelect
   },
-
-  // Mixins
-  mixins: [],
 
   // Props
   props: {
@@ -190,28 +200,25 @@ export default {
     return {
       nameEditable: false,
       loading: false,
+      colorTemp: undefined,
       nameTemp: undefined,
       showDeleteDialog: false
     }
   },
 
   // Computed
-  computed: {},
-
-  // Watch
-  watch: {},
-
-  // Created
-  created () {},
-
-  // Mounted
-  mounted () {},
+  computed: {
+    displayColor () {
+      return !this.nameEditable ? this.color : this.colorTemp
+    }
+  },
 
   // Methods
   methods: {
     enableEditing () {
       this.nameEditable = true
       this.nameTemp = this.name
+      this.colorTemp = this.color
     },
 
     cancelEditing () {
@@ -222,8 +229,8 @@ export default {
       this.nameTemp = value
     },
 
-    async saveBoardName () {
-      if (this.nameTemp === this.name) {
+    async saveColumn () {
+      if (this.nameTemp === this.name && this.colorTemp === this.color) {
         this.cancelEditing()
         return
       }
@@ -233,10 +240,11 @@ export default {
           url: `/api/columns/update/${this.columnId}`,
           method: 'patch',
           data: {
-            name: this.nameTemp
+            name: this.nameTemp,
+            color: this.colorTemp
           }
         })
-        this.$emit('name-updated', response.data.column.name)
+        this.$emit('column-updated', response.data.column)
         this.nameEditable = false
       } catch (error) {
         console.warn(error)
@@ -244,10 +252,6 @@ export default {
         this.loading = false
       }
     }
-
-    // handleDelete (board) {
-    //   this.$emit('delete')
-    // }
   }
 }
 </script>
@@ -266,6 +270,15 @@ export default {
     flex-grow: 1;
   }
 
+  &__color {
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    border-radius: 5px;
+    border: 1px solid #252525;
+  }
+
   &__name {
     display: flex;
     flex-direction: row;
@@ -274,6 +287,10 @@ export default {
   &__edit {
     max-width: 36px;
     min-width: 36px;
+  }
+
+  &__fields {
+    flex-grow: 1;
   }
 
   &__name-field {

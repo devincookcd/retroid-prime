@@ -125,7 +125,7 @@ export default {
   height: 56px;
 
   &:hover .board-name__edit {
-    display: block;
+    display: inline-flex;
   }
 
   &__text {
