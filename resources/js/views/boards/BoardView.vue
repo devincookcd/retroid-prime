@@ -39,6 +39,8 @@
           :items="column.items"
           :editable="boardColumnsEditable"
           @column-updated="updateColumn(index, $event)"
+          @item-created="addItem(column.id, $event)"
+          @item-updated="updateItem(column.id, $event)"
           @delete="removeColumn(index)"
         />
       </Draggable>
@@ -102,6 +104,25 @@ export default {
       this.board.columns.push(column)
     },
 
+    addItem (columnId, item) {
+      const column = this.board.columns.find(column => column.id === columnId)
+      column.items.push(item)
+      // console.log(columnId)
+      // console.log(item)
+      // console.log(column)
+      // column.items.push(item)
+      // console.log(item)
+      // console.log(column)
+    },
+
+    updateItem (columnId, item) {
+      console.log('update item!')
+      const column = this.board.columns.find(column => column.id === columnId)
+      const itemIndex = column.items.findIndex(itemObject => itemObject.id === item.id)
+      this.$set(column.items, itemIndex, item)
+      // column.items.push(item)
+    },
+
     removeColumn (index) {
       this.board.columns.splice(index, 1)
     },
@@ -141,9 +162,32 @@ export default {
       }
     },
 
+    // async createItem () {
+    //   try {
+    //     await this.$axios({
+    //       url: '/api/items/create',
+    //       method: 'post',
+    //       data: {
+    //         text: this.newBoardItem,
+    //         board_id: this.boardId,
+    //         board_column_id: this.columnId
+    //       }
+    //     })
+    //   } catch (error) {
+    //     console.warn(error)
+    //   }
+    // },
+
     updateColumn (index, value) {
       this.$set(this.board.columns, index, value)
       // this.board.columns[index] = value
+    },
+
+    editBoardItem (item) {
+      // const newItems = this.board.columns.items.find(boardItem => boardItem.id === item.id)
+      // console.log(item)
+      // item.editable = true
+      // console.log(newItems)
     }
   }
 }

@@ -102,6 +102,8 @@ class BoardColumnController extends Controller
             'color' => $request->color
         ]);
 
+        $column->items;
+
         return [
             'column' => $column,
             'message' => 'Column name updated.'

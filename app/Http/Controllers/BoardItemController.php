@@ -83,6 +83,16 @@ class BoardItemController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $item = BoardItem::findOrFail($id);
+
+        $item->update([
+            'text' => $request->text
+        ]);
+
+        return [
+            'item' => $item,
+            'message' => 'Item text updated.'
+        ];
     }
 
     /**

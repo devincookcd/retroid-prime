@@ -58,7 +58,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('/items')->group(function () {
         Route::post('/create', 'BoardItemController@store');
         // Route::patch('/reorder', 'BoardItemsController@reorder');
-        // Route::patch('/update/{id}', 'BoardItemsController@update');
+        Route::patch('/update/{id}', 'BoardItemController@update');
         // Route::delete('/delete/{id}', 'BoardItemsController@destroy');
     });
 

@@ -111,10 +111,13 @@
         <BoardItem
           v-else
           v-model="newBoardItem"
+          :column-id="columnId"
+          :board-id="boardId"
           :color="color"
           new-item
+          @item-created="handleItemCreated"
+
           @cancel="cancelNewItem"
-          @save="createItem"
         />
 
         <div
@@ -125,61 +128,16 @@
             v-for="item in items"
             :key="item.id"
             :value="item.text"
+            :item-id="item.id"
+            :column-id="columnId"
+            :board-id="boardId"
             :color="color"
-            :editable="false"
+            @item-updated="handleItemUpdated"
             @cancel="cancelNewItem"
-            @save="createItem"
           />
+          <!-- :editable="item.editable" -->
         </div>
-        <!-- <div class="text-xs-center mt-4">
-          No Items Yet
-        </div> -->
-        <!-- <v-card
-          :color="`${color} lighten-1`"
-          flat
-        >
-          <v-card-text>
-            <v-textarea
-              :label="false"
-              box
-              auto-grow
-              hide-details
-              rows="3"
-              color="white"
-              value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-            />
-          </v-card-text>
-
-          <v-card-actions class="pt-0">
-            <v-spacer />
-            <v-btn
-              icon
-              flat
-              class="column__edit ma-0"
-            >
-              <v-icon>cancel</v-icon>
-            </v-btn>
-            <v-btn
-              icon
-              flat
-              class="column__edit ma-0"
-            >
-              <v-icon>check</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card> -->
       </v-card-text>
-      <!-- <v-card-actions>
-        <v-spacer />
-        <v-btn
-          icon
-          @click="removeColumn(index)"
-        >
-          <v-icon>
-            delete
-          </v-icon>
-        </v-btn>
-      </v-card-actions> -->
     </v-card>
 
     <BoardColumnDeleteDialog
@@ -278,20 +236,14 @@ export default {
       this.nameTemp = value
     },
 
-    async createItem () {
-      try {
-        await this.$axios({
-          url: '/api/items/create',
-          method: 'post',
-          data: {
-            text: this.newBoardItem,
-            board_id: this.boardId,
-            board_column_id: this.columnId
-          }
-        })
-      } catch (error) {
-        console.warn(error)
-      }
+    handleItemCreated (item) {
+      this.showNewItem = false
+      this.$emit('item-created', item)
+    },
+
+    handleItemUpdated (item) {
+      // this.showNewItem = false
+      this.$emit('item-updated', item)
     },
 
     async saveColumn () {
